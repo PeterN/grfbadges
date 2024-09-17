@@ -1,0 +1,10 @@
+##grflangid 0x01
+
+STR_NAME               :Default Badge Set
+STR_DESCRIPTION        :A set of badges for common country flags, power types and operator logos
+
+# Class names
+STR_CLASS_FLAG         :Country/Region
+STR_CLASS_USAGE        :Usage
+STR_CLASS_OPERATOR     :Operator
+STR_CLASS_PROPULSION   :Propulsion
