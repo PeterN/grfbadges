@@ -286,6 +286,11 @@ def define_badges(b):
     b.add("fZM ", "flag-icons/zm.svg", "STR_FLAG_ZM")
     b.add("fZW ", "flag-icons/zw.svg", "STR_FLAG_ZW")
 
+    # Historical flags
+    b.add("f_YU", "Civil_Ensign_of_Yugoslavia_(1950–1992).svg", "STR_FLAG__YU")
+    b.add("fGDR", "Flag_of_East_Germany.svg", "STR_FLAG_GDR")
+    b.add("f_SU", "Flag_of_the_Soviet_Union.svg", "STR_FLAG__SU")
+
     # Power types
     b.add("pSTE", "steam.png", "STR_PROPULSION_STE")
     b.add("pDIE", "diesel.png", "STR_PROPULSION_DIE")
