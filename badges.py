@@ -285,3 +285,9 @@ def define_badges(b):
     b.add("fZA ", "flag-icons/za.svg", "STR_FLAG_ZA")
     b.add("fZM ", "flag-icons/zm.svg", "STR_FLAG_ZM")
     b.add("fZW ", "flag-icons/zw.svg", "STR_FLAG_ZW")
+
+    # Power types
+    b.add("pSTE", "steam.png", "STR_PROPULSION_STE")
+    b.add("pDIE", "diesel.png", "STR_PROPULSION_DIE")
+    b.add("pELE", "electric.svg", "STR_PROPULSION_ELE")
+    b.add("pTUR", "turbine.svg", "STR_PROPULSION_TUR")

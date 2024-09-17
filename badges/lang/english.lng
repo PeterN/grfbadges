@@ -288,3 +288,9 @@ STR_FLAG_YT            :Mayotte
 STR_FLAG_ZA            :South Africa
 STR_FLAG_ZM            :Zambia
 STR_FLAG_ZW            :Zimbabwe
+
+# Power types
+STR_PROPULSION_STE     :Steam
+STR_PROPULSION_DIE     :Diesel
+STR_PROPULSION_ELE     :Electric
+STR_PROPULSION_TUR     :Gas Turbine
