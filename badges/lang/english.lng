@@ -8,3 +8,11 @@ STR_CLASS_FLAG         :Country/Region
 STR_CLASS_USAGE        :Usage
 STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
+
+# Modes
+STR_MODE_PAS           :Passenger
+STR_MODE_FRE           :Freight
+STR_MODE_MIX           :Mixed
+STR_MODE_EXP           :Express passenger
+STR_MODE_EXF           :Express freight
+STR_MODE_HEF           :Heavy freight
