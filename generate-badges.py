@@ -36,6 +36,9 @@ s.import_lang_dir(str(BADGE_PATH / "lang"))
 
 class Badge:
     def __init__(self, id, label, image, string, flags=None):
+        if len(grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))) != 4:
+            raise ValueError("label must be 4 bytes")
+
         self.id = g.resolve_id(BADGE, label) if id == None else id
         self.label = label
         self.image = image
