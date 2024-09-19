@@ -1,0 +1,2 @@
+# grfbadges
+NewGRF Badges
