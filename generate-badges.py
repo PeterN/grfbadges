@@ -64,8 +64,9 @@ define_badges(badges)
 # less accurate, but actually makes them fit in better.
 flag_overlay = {}
 flag_overlay[grf.ZOOM_NORMAL] = grf.Image.open(BADGE_PATH / f"flag-overlay-{FLAG_WIDTH}x{FLAG_HEIGHT}.png")
-flag_overlay[grf.ZOOM_2X] = flag_overlay[grf.ZOOM_NORMAL].resize(size=(FLAG_WIDTH * 2, FLAG_HEIGHT * 2), resample=Image.Resampling.NEAREST)
-flag_overlay[grf.ZOOM_4X] = flag_overlay[grf.ZOOM_NORMAL].resize(size=(FLAG_WIDTH * 4, FLAG_HEIGHT * 4), resample=Image.Resampling.NEAREST)
+for zoom in [grf.ZOOM_2X, grf.ZOOM_4X]:
+    scale = lib.get_scale_for_zoom(zoom)
+    flag_overlay[zoom] = flag_overlay[grf.ZOOM_NORMAL].resize(size=(FLAG_WIDTH * scale, FLAG_HEIGHT * scale), resample=Image.Resampling.NEAREST)
 
 class BadgeSprite(grf.SpriteGenerator):
     def __init__(self, badge):

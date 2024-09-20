@@ -12,6 +12,12 @@ def register_badge_feature():
 
     return BADGE
 
+def get_scale_for_zoom(zoom):
+    if zoom == grf.ZOOM_NORMAL: return 1
+    if zoom == grf.ZOOM_2X: return 2
+    if zoom == grf.ZOOM_4X: return 4
+    raise ValueError("zoom out of range")
+
 class PropertyBatcher(grf.SpriteGenerator):
     def __init__(self, feature, property, values):
         self.feature = feature
