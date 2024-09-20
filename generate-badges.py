@@ -39,7 +39,7 @@ class Badge:
         if len(grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))) != 4:
             raise ValueError("label must be 4 bytes")
 
-        self.id = g.resolve_id(BADGE, label) if id == None else id
+        self.id = g.resolve_id(BADGE, label) if id is None else id
         self.label = label
         self.image = image
         self.string = string
@@ -51,7 +51,7 @@ class Badges:
         self.next_id = 0
 
     def add(self, label, image, string, flags=None):
-        self.badges.append(Badge(self.next_id, label, image, None if string == None else s[string], flags))
+        self.badges.append(Badge(self.next_id, label, image, None if string is None else s[string], flags))
         self.next_id += 1
 
 badges = Badges()
@@ -80,7 +80,7 @@ class BadgeSprite(grf.Sprite):
         self.image = None
 
     def get_image(self):
-        if self.image == None:
+        if self.image is None:
             self.image = self.load()
         return self.image
 
@@ -131,7 +131,7 @@ class ReusableImage:
         return grf.Image.open(self.filename).convert(mode="RGBA")
 
     def get_image(self):
-        if self.image == None:
+        if self.image is None:
             self.image = self.load()
         return self.image
 
