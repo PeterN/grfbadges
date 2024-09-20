@@ -68,50 +68,128 @@ for zoom in [grf.ZOOM_2X, grf.ZOOM_4X]:
     scale = lib.get_scale_for_zoom(zoom)
     flag_overlay[zoom] = flag_overlay[grf.ZOOM_NORMAL].resize(size=(FLAG_WIDTH * scale, FLAG_HEIGHT * scale), resample=Image.Resampling.NEAREST)
 
-class BadgeSprite(grf.SpriteGenerator):
+class BadgeSprite(grf.Sprite):
+    def __init__(self, badge, zoom):
+        self.badge = badge
+        self.zoom = zoom
+        self.bpp = grf.BPP_32
+        self.crop = False
+        self.xofs = 0
+        self.yofs = 0
+        self.file = grf.ResourceFile(str(BADGE_PATH / self.badge.label[0] / self.badge.image))
+        self.image = None
+
+    def get_image(self):
+        if self.image == None:
+            self.image = self.load()
+        return self.image
+
+    def get_resource_files(self):
+        return super().get_resource_files() + (self.file,)
+
+    def get_fingerprint(self):
+        return {
+            'class': self.__class__.__name__,
+            'filename': self.file.path,
+            'zoom': self.zoom,
+        }
+
+class SvgFlagSprite(BadgeSprite):
+    def __init__(self, badge, zoom):
+        super().__init__(badge, zoom)
+        scale = lib.get_scale_for_zoom(self.zoom)
+        self.w = int(FLAG_WIDTH * scale)
+        self.h = int(FLAG_HEIGHT * scale)
+
+    def load(self):
+        flag = svg2png(url=self.file.path, output_height=self.h)
+        f = io.BytesIO(flag)
+        im = grf.Image.open(f).convert(mode="RGBA").resize((self.w, self.h))
+        im = Image.blend(im, flag_overlay[self.zoom], 0.25)
+        return im, grf.BPP_32
+
+class SvgBadgeSprite(BadgeSprite):
+    def __init__(self, badge, zoom):
+        super().__init__(badge, zoom)
+        scale = lib.get_scale_for_zoom(self.zoom)
+        self.w = int(BADGE_HEIGHT * scale * 4 / 3)
+        self.h = int(BADGE_HEIGHT * scale)
+        self.image = None
+
+    def load(self):
+        flag = svg2png(url=self.file.path, output_width=self.w, output_height=self.h)
+        f = io.BytesIO(flag)
+        im = grf.Image.open(f).convert(mode="RGBA")
+        return im, grf.BPP_32
+
+class ReusableImage:
+    def __init__(self, filename):
+        self.filename = filename
+        self.image = None
+
+    def load(self):
+        return grf.Image.open(self.filename).convert(mode="RGBA")
+
+    def get_image(self):
+        if self.image == None:
+            self.image = self.load()
+        return self.image
+
+class ImageBadgeSprite(grf.Sprite):
+    def __init__(self, image, zoom):
+        self.image = image
+        self.zoom = zoom
+        scale = lib.get_scale_for_zoom(self.zoom)
+
+        im = self.image.get_image()
+        self.w = int(BADGE_HEIGHT * scale * im.size[0] / im.size[1])
+        self.h = int(BADGE_HEIGHT * scale)
+        self.xofs = 0
+        self.yofs = 0
+        self.bpp = grf.BPP_32 # ReusableImage converts to RGBA
+        self.crop = False
+
+    def get_image(self):
+        im = self.image.get_image()
+        im = im.resize((self.w, self.h))
+        return im, self.bpp
+
+    def get_fingerprint(self):
+        raise grf.Uncacheable
+
+class BadgeSprites(grf.SpriteGenerator):
     def __init__(self, badge):
         self.badge = badge
         self.filename = str(BADGE_PATH / badge.label[0] / badge.image)
 
-    def make_badge_bpps(self, im, zoom):
+    def make_badge_bpps(self, sprite):
         sprites = []
-        sprites.append(grf.QuantizeSprite(grf.ImageSprite(im, zoom=zoom, crop=False)))
         if BPP == grf.BPP_32:
-            sprites.append(grf.ImageSprite(im, zoom=zoom, crop=False))
+            sprites.append(sprite)
+        sprites.append(grf.QuantizeSprite(sprite))
         return sprites
 
-    def make_flag(self, zoom, scale):
-        flag = svg2png(url=self.filename, output_height=scale * FLAG_HEIGHT * scale)
-        f = io.BytesIO(flag)
-        im = grf.Image.open(f).convert(mode="RGBA").resize((FLAG_WIDTH * scale, FLAG_HEIGHT * scale))
-        return Image.blend(im, flag_overlay[zoom], 0.25)
+    def make_badge_from_svg(self, zoom, isFlag):
+        sprite = SvgFlagSprite(self.badge, zoom) if isFlag else SvgBadgeSprite(self.badge, zoom)
+        return self.make_badge_bpps(sprite)
 
-    def make_badge(self, scale):
-        flag = svg2png(url=self.filename, output_width=BADGE_HEIGHT * scale * 4 / 3, output_height=BADGE_HEIGHT * scale)
-        f = io.BytesIO(flag)
-        return grf.Image.open(f)
-
-    def make_badge_from_svg(self, zoom, scale, isFlag):
-        im = self.make_flag(zoom, scale) if isFlag else self.make_badge(scale)
-        return self.make_badge_bpps(im, zoom)
-
-    def make_badge_from_image(self, im, zoom, scale):
-        im = im.resize((int(BADGE_HEIGHT * scale * im.size[0] / im.size[1]), int(BADGE_HEIGHT * scale)))
-        return self.make_badge_bpps(im, zoom)
+    def make_badge_from_image(self, im, zoom):
+        sprite = ImageBadgeSprite(im, zoom)
+        return self.make_badge_bpps(sprite)
 
     def get_sprites(self, g):
         sprites = []
         if self.badge.image.endswith(".svg"):
             # Badges in the flag class have the flag overlay applied
             isFlag = self.badge.label.startswith("f")
-            sprites.extend(self.make_badge_from_svg(grf.ZOOM_NORMAL, 1, isFlag))
-            if ZOOM == grf.ZOOM_2X or ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_2X, 2, isFlag))
-            if ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_4X, 4, isFlag))
+            sprites.extend(self.make_badge_from_svg(grf.ZOOM_NORMAL, isFlag))
+            if ZOOM == grf.ZOOM_2X or ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_2X, isFlag))
+            if ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_4X, isFlag))
         else:
-            im = grf.Image.open(self.filename).convert(mode="RGBA")
-            sprites.extend(self.make_badge_from_image(im, grf.ZOOM_NORMAL, 1))
-            if ZOOM == grf.ZOOM_2X or ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_image(im, grf.ZOOM_2X, 2))
-            if ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_image(im, grf.ZOOM_4X, 4))
+            im = ReusableImage(self.filename)
+            sprites.extend(self.make_badge_from_image(im, grf.ZOOM_NORMAL))
+            if ZOOM == grf.ZOOM_2X or ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_image(im, grf.ZOOM_2X))
+            if ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_image(im, grf.ZOOM_4X))
 
         return [
             grf.AlternativeSprites(*sprites)
@@ -127,7 +205,7 @@ class BadgeSpriteBatch(grf.SpriteGenerator):
         res.append(grf.Action1(feature=BADGE, set_count=len(self.badges), sprite_count=1))
 
         for b in self.badges:
-            res.append(BadgeSprite(b))
+            res.append(BadgeSprites(b))
 
         act1id = 0
         for b in self.badges:
