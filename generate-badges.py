@@ -215,14 +215,14 @@ class BadgeSpriteBatch(grf.SpriteGenerator):
         return res
 
 # Define properties
-g.add(lib.PropertyBatcher(BADGE, "label", ((b.id, grf.to_bytes(bytes(b.label, "utf-8").decode("unicode_escape"))) for b in badges.badges if b.label != None)))
-g.add(lib.PropertyBatcher(BADGE, "flags", ((b.id, b.flags) for b in badges.badges if b.flags != None)))
+g.add(lib.PropertyBatcher(BADGE, "label", ((b.id, grf.to_bytes(bytes(b.label, "utf-8").decode("unicode_escape"))) for b in badges.badges if b.label is not None)))
+g.add(lib.PropertyBatcher(BADGE, "flags", ((b.id, b.flags) for b in badges.badges if b.flags is not None)))
 
 # Define names
 g.add(lib.StringBatcher(BADGE, ((b.id, b.string) for b in badges.badges)))
 
 # Define sprites
-for first, values in grf.combine_ranges((b.id, b) for b in badges.badges if b.image != None):
+for first, values in grf.combine_ranges((b.id, b) for b in badges.badges if b.image is not None):
     g.add(BadgeSpriteBatch(first, values))
 
 grf.main(g, "badges.grf")
