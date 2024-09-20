@@ -196,8 +196,7 @@ class BadgeSprites(grf.SpriteGenerator):
         ]
 
 class BadgeSpriteBatch(grf.SpriteGenerator):
-    def __init__(self, first_id, badges):
-        self.first_id = first_id
+    def __init__(self, badges):
         self.badges = badges
 
     def get_sprites(self, g):
@@ -222,7 +221,6 @@ g.add(lib.PropertyBatcher(BADGE, "flags", ((b.id, b.flags) for b in badges.badge
 g.add(lib.StringBatcher(BADGE, ((b.id, b.string) for b in badges.badges)))
 
 # Define sprites
-for first, values in grf.combine_ranges((b.id, b) for b in badges.badges if b.image is not None):
-    g.add(BadgeSpriteBatch(first, values))
+g.add(BadgeSpriteBatch([b for b in badges.badges if b.image is not None]))
 
 grf.main(g, "badges.grf")
