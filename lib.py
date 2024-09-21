@@ -37,7 +37,7 @@ class StringBatcher(grf.SpriteGenerator):
     def get_sprites(self, g):
         lang_strings = {}
         for id, string in self.strings:
-            if isinstance(string, grf.StringRef):
+            if string is not None:
                 for lang_id, text in string.get_pairs():
                     if not lang_id in lang_strings:
                         lang_strings[lang_id] = []
