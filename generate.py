@@ -1,6 +1,8 @@
 # pip install git+https://github.com/citymania-org/grf-py.git@ae4aeab54638cc206d3c969caae0e473a8636651#egg=grf
 
 import io
+import os
+from datetime import datetime
 from pathlib import Path
 from cairosvg import svg2png
 from PIL import Image
@@ -58,6 +60,7 @@ class Badge(grf.SpriteGenerator):
         self.crop = crop
         self.filters = filters
         self.overlay = overlay
+        self.doc_sprite = None
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -79,6 +82,9 @@ class Badges(grf.SpriteGenerator):
         self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags, filters=filters, overlay=overlay))
         self.next_id += 1
 
+    def get_class(self, badge_class):
+        return next((b for b in self.badges if b.label == badge_class), None)
+
     def get_sprites(self, g):
         return [
             # Define properties
@@ -89,6 +95,71 @@ class Badges(grf.SpriteGenerator):
             # Define sprites
             BadgeSpriteBatch([b for b in self.badges if b.image is not None]),
         ]
+
+    def generate_docs(self, path, title, bpp, zoom):
+
+        def write_header(md):
+            def write_header_class(md, c):
+                b = self.get_class(c)
+                if b is not None:
+                    md.write(f"| `{b.label}` | [{str(b.string)}](#c_{b.label}) |\n")
+
+            md.write("## Classes\n\n")
+
+            md.write("| Prefix | Name |\n")
+            md.write("| ------ | ---- |\n")
+
+            for c in sorted(classes):
+                write_header_class(md, c)
+
+        def write_badge(md, b):
+            safer_label = b.label
+            if b.image is not None:
+                file = path / "images" / f"{safer_label}.png"
+                if not os.path.exists(file):
+                    # Create image if it does not exist.
+                    if b.doc_sprite is not None:
+                        try:
+                            image = b.doc_sprite.make_rgba_image()
+                            os.makedirs(os.path.dirname(path / "images" / f"{safer_label}.png"), exist_ok = True)
+                            image.save(path / "images" / f"{safer_label}.png")
+                        except Exception as e:
+                            print(f"Failed saving image for {b.label}: {e}")
+
+                md.write(f"| ![{safer_label}](images/{safer_label}.png) | <a name=\"b_{hex}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
+            else:
+                md.write(f"|  | <a name=\"b_{safer_label}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
+
+        def write_class(md, c):
+            class_badges = sorted([b for b in self.badges if b.label.split("/")[0] == c], key=lambda b: b.label)
+
+            b = self.get_class(c)
+            if b is not None:
+                md.write(f"### <a name=\"c_{b.label}\"></a>{str(b.string)}\n\n")
+
+            md.write("| Icon | Label | Description |   |\n")
+            md.write("| ---- | ----- | ----------- | - |\n")
+            for b in [b for b in class_badges if len(b.label.split("/")) > 1]:
+                write_badge(md, b)
+
+            md.write("\n")
+
+        os.makedirs(path / "images", exist_ok = True)
+
+        with open(path / "README.md", "w") as md:
+            md.write(f"# {title}\n\n")
+            md.write(f"Documentation built at {datetime.now()}\n\n")
+
+            classes = set(map(lambda b: b.label.split("/")[0], self.badges))
+            write_header(md)
+
+            md.write("\n")
+            md.write("## Badges\n\n")
+
+            for c in sorted(classes):
+                write_class(md, c)
+
+            md.close()
 
 class BadgeSprite(grf.Sprite):
     def __init__(self, badge, zoom):
@@ -225,6 +296,22 @@ class CropSprite(grf.SpriteWrapper):
         img = img.crop((left, top, right, bottom))
         return img, bpp
 
+class DocSprite(grf.SpriteWrapper):
+    def __init__(self, sprite, badge):
+        super().__init__((sprite, ))
+        self.sprite = sprite
+        self.badge = badge
+        self.w = None
+        self.h = None
+
+    def get_data_layers(self, context):
+        self.badge.doc_sprite = self.sprite
+        return self.sprite.get_data_layers(context)
+
+    def get_image(self):
+        self.badge.doc_sprite = self.sprite
+        return self.sprite.get_image()
+
 class BadgeSprites(grf.SpriteGenerator):
     def __init__(self, badge):
         self.badge = badge
@@ -239,7 +326,7 @@ class BadgeSprites(grf.SpriteGenerator):
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
-        if grf.BPP_32 in BADGE_BPP: sprites.append(sprite)
+        if grf.BPP_32 in BADGE_BPP: sprites.append(DocSprite(sprite, self.badge) if zoom == grf.ZOOM_2X else sprite)
         if grf.BPP_8 in BADGE_BPP: sprites.append(QuantizeSprite(sprite))
         return sprites
 
