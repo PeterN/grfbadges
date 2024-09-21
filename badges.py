@@ -2,6 +2,7 @@
 
 import grf
 import generate
+from pathlib import Path
 
 g = grf.NewGRF(
     format_version=8,
@@ -312,3 +313,5 @@ b.add("pTUR", "turbine.svg", "STR_PROPULSION_TUR")
 g.add(b)
 
 grf.main(g, "badges.grf")
+
+b.generate_docs(Path("docs/badges"), "GRF Badges", grf.BPP_32, grf.ZOOM_2X)
