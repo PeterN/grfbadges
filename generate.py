@@ -1,6 +1,8 @@
 # pip install git+https://github.com/citymania-org/grf-py.git@ae4aeab54638cc206d3c969caae0e473a8636651#egg=grf
 
 import io
+import os
+from datetime import datetime
 from pathlib import Path
 from cairosvg import svg2png
 from PIL import Image
@@ -58,6 +60,7 @@ class Badge(grf.SpriteGenerator):
         self.crop = crop
         self.filters = filters
         self.overlay = overlay
+        self.sprites = None
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -79,6 +82,10 @@ class Badges(grf.SpriteGenerator):
         self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags, filters=filters, overlay=overlay))
         self.next_id += 1
 
+    def get_class(self, badge_class):
+        class_bytes = bytes([badge_class]) + b"\0\0\0"
+        return next((b for b in self.badges if b.label_bytes == class_bytes), None)
+
     def get_sprites(self, g):
         return [
             # Define properties
@@ -89,6 +96,68 @@ class Badges(grf.SpriteGenerator):
             # Define sprites
             BadgeSpriteBatch([b for b in self.badges if b.image is not None]),
         ]
+
+    def generate_docs(self, path, title, bpp, zoom):
+
+        def write_header(md):
+            def write_header_class(md, c):
+                b = self.get_class(c)
+                if b is not None:
+                    md.write(f"| `\'{b.label[0]}\'` | `{bytes([b.label_bytes[0]]).hex()}` | [{str(b.string)}](#c_{b.label_bytes.hex()}) |\n")
+
+            md.write("## Classes\n\n")
+
+            md.write("| Prefix | Hex | Name |\n")
+            md.write("| ------ | --- | ---- |\n")
+
+            for c in sorted(classes):
+                write_header_class(md, c)
+
+        def write_badge(md, b):
+            hex = b.label_bytes.hex()
+            if b.sprites is not None:
+                file = path / "images" / f"{hex}.png"
+                if not os.path.exists(file):
+                    # Create image if it does not exist.
+                    sprites = b.sprites.get_sprites(None)[-1].sprites
+                    for s in sprites:
+                        if s.bpp == bpp and s.zoom == zoom:
+                            s.get_image()[0].save(path / "images" / f"{hex}.png")
+
+                md.write(f"| ![{hex}](images/{hex}.png) | `'{b.label}'` | <a name=\"b_{hex}\"></a>`{hex}` | {str(b.string)} | [#](#b_{hex}) |\n")
+            else:
+                md.write(f"|  | `\"{b.label}\"` | <a name=\"b_{hex}\"></a>`{hex}` | {str(b.string)} | [#](#b_{hex}) |\n")
+
+        def write_class(md, c):
+            class_badges = sorted([b for b in self.badges if b.label_bytes[0] == c], key=lambda b: b.label)
+
+            b = self.get_class(c)
+            if b is not None:
+                md.write(f"### <a name=\"c_{b.label_bytes.hex()}\"></a>{str(b.string)}\n\n")
+
+            md.write("| Icon | Label | Hex | Description |   |\n")
+            md.write("| ---- | ----- | --- | ----------- | - |\n")
+            for b in [b for b in class_badges if not b.label_bytes.endswith(b"\0\0\0")]:
+                write_badge(md, b)
+
+            md.write("\n")
+
+        os.makedirs(path / "images", exist_ok = True)
+
+        with open(path / "README.md", "w") as md:
+            md.write(f"# {title}\n\n")
+            md.write(f"Documentation built at {datetime.now()}\n\n")
+
+            classes = set(map(lambda b: b.label_bytes[0], self.badges))
+            write_header(md)
+
+            md.write("\n")
+            md.write("## Badges\n\n")
+
+            for c in sorted(classes):
+                write_class(md, c)
+
+            md.close()
 
 class BadgeSprite(grf.Sprite):
     def __init__(self, badge, zoom):
