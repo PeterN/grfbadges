@@ -39,7 +39,7 @@ class BadgeOverlays:
 flag_overlays = BadgeOverlays("flag-overlay")
 
 class Badge(grf.SpriteGenerator):
-    def __init__(self, id, label, image, string, flags=None):
+    def __init__(self, id, label, image, string, flags=None, crop=True):
         label_bytes = grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))
         if len(label_bytes) != 4:
             raise ValueError("label must be 4 bytes")
@@ -52,6 +52,7 @@ class Badge(grf.SpriteGenerator):
         self.image = image
         self.string = string
         self.flags = flags
+        self.crop = crop
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -173,6 +174,18 @@ class ImageBadgeSprite(grf.Sprite):
     def get_fingerprint(self):
         raise grf.Uncacheable
 
+class CropSprite(grf.SpriteWrapper):
+    def __init__(self, sprite):
+        super().__init__((sprite, ))
+        self.sprite = sprite
+        self.w = None
+        self.h = None
+
+    def get_image(self):
+        img, bpp = self.sprite.get_image()
+        img = img.crop(img.getbbox())
+        return img, bpp
+
 class BadgeSprites(grf.SpriteGenerator):
     def __init__(self, badge):
         self.badge = badge
@@ -180,6 +193,8 @@ class BadgeSprites(grf.SpriteGenerator):
 
     def make_badge_bpps(self, sprite):
         sprites = []
+        if self.badge.crop:
+            sprite = CropSprite(sprite)
         if BADGE_BPP == grf.BPP_32:
             sprites.append(sprite)
         sprites.append(grf.QuantizeSprite(sprite))
