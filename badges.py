@@ -5,6 +5,7 @@ import grf
 import generate
 import filters
 from lib import BadgeFlags
+from pathlib import Path
 
 g = grf.NewGRF(
     format_version=8,
@@ -331,3 +332,5 @@ b.add("livery/2cc", "2cc.svg", "STR_COLOUR_COMPANY_2CC", flags=BadgeFlags.USE_CO
 g.add(b)
 
 grf.main(g, "badges.grf")
+
+b.generate_docs(Path("docs/badges"), "GRF Badges", grf.BPP_32, grf.ZOOM_2X)
