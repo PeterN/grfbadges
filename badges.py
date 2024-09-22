@@ -19,12 +19,12 @@ b.add("o\0\0\0", None, "STR_CLASS_OPERATOR")
 b.add("p\0\0\0", None, "STR_CLASS_PROPULSION")
 
 # Modes
-b.add("mPAS", None, "STR_MODE_PAS")
-b.add("mFRE", None, "STR_MODE_FRE")
-b.add("mMIX", None, "STR_MODE_MIX")
-b.add("mEXP", None, "STR_MODE_EXP")
-b.add("mEXF", None, "STR_MODE_EXF")
-b.add("mHEF", None, "STR_MODE_HEF")
+b.add("mPAS", None, "STR_MODE_PASSENGER")
+b.add("mFRE", None, "STR_MODE_FREIGHT")
+b.add("mMIX", None, "STR_MODE_MIXED")
+b.add("mEXP", None, "STR_MODE_EXPRESS_PASSENGER")
+b.add("mEXF", None, "STR_MODE_EXPRESS_FREIGHT")
+b.add("mHEF", None, "STR_MODE_HEAVY_FREIGHT")
 
 # Country flags
 b.add("fAD ", "flag-icons/ad.svg", "STR_FLAG_AD")
@@ -304,10 +304,10 @@ b.add("fGDR", "Flag_of_East_Germany.svg", "STR_FLAG_GDR")
 b.add("f_SU", "Flag_of_the_Soviet_Union.svg", "STR_FLAG__SU")
 
 # Power types
-b.add("pSTE", "steam.png", "STR_PROPULSION_STE")
-b.add("pDIE", "diesel.png", "STR_PROPULSION_DIE")
-b.add("pELE", "electric.svg", "STR_PROPULSION_ELE")
-b.add("pTUR", "turbine.svg", "STR_PROPULSION_TUR")
+b.add("pSTE", "steam.png", "STR_PROPULSION_STEAM")
+b.add("pDIE", "diesel.png", "STR_PROPULSION_DIESEL")
+b.add("pELE", "electric.svg", "STR_PROPULSION_ELECTRIC")
+b.add("pTUR", "turbine.svg", "STR_PROPULSION_GAS_TURBINE")
 
 g.add(b)
 

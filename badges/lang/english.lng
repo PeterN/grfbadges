@@ -10,12 +10,12 @@ STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
 
 # Modes
-STR_MODE_PAS           :Passenger
-STR_MODE_FRE           :Freight
-STR_MODE_MIX           :Mixed
-STR_MODE_EXP           :Express passenger
-STR_MODE_EXF           :Express freight
-STR_MODE_HEF           :Heavy freight
+STR_MODE_PASSENGER           :Passenger
+STR_MODE_FREIGHT             :Freight
+STR_MODE_MIXED               :Mixed
+STR_MODE_EXPRESS_PASSENGER   :Express passenger
+STR_MODE_EXPRESS_FREIGHT     :Express freight
+STR_MODE_HEAVY_FREIGHT       :Heavy freight
 
 # Country flags
 STR_FLAG_AD            :Andorra
@@ -295,7 +295,7 @@ STR_FLAG_GDR           :East Germany
 STR_FLAG__SU           :USSR
 
 # Power types
-STR_PROPULSION_STE     :Steam
-STR_PROPULSION_DIE     :Diesel
-STR_PROPULSION_ELE     :Electric
-STR_PROPULSION_TUR     :Gas Turbine
+STR_PROPULSION_STEAM           :Steam
+STR_PROPULSION_DIESEL          :Diesel
+STR_PROPULSION_ELECTRIC        :Electric
+STR_PROPULSION_GAS_TURBINE     :Gas Turbine
