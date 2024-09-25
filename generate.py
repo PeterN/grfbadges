@@ -4,6 +4,7 @@ import io
 from pathlib import Path
 from cairosvg import svg2png
 from PIL import Image
+from filters import SpriteFilter
 
 import lib
 import grf
@@ -39,12 +40,16 @@ class BadgeOverlays:
 flag_overlays = BadgeOverlays("flag-overlay")
 
 class Badge(grf.SpriteGenerator):
-    def __init__(self, id, label, image, string, flags=None, crop=True):
+    def __init__(self, id, label, image, string, flags=None, crop=True, filters=None):
         label_bytes = grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))
         if len(label_bytes) != 4:
             raise ValueError("label must be 4 bytes")
         if string is not None and not isinstance(string, grf.StringRef):
             raise ValueError("string must be None or a StringRef")
+        if filters is not None:
+            for filter in filters:
+                if not isinstance(filter, SpriteFilter):
+                    raise ValueError("filters must be None or a SpriteFilter")
 
         self.id = id
         self.label = label
@@ -53,6 +58,7 @@ class Badge(grf.SpriteGenerator):
         self.string = string
         self.flags = flags
         self.crop = crop
+        self.filters = filters
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -70,8 +76,8 @@ class Badges(grf.SpriteGenerator):
         else:
             self.s = s
 
-    def add(self, label, image, string, flags=None):
-        self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags))
+    def add(self, label, image, string, flags=None, filters=None):
+        self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags, filters=filters))
         self.next_id += 1
 
     def get_sprites(self, g):
@@ -195,6 +201,9 @@ class BadgeSprites(grf.SpriteGenerator):
         sprites = []
         if self.badge.crop:
             sprite = CropSprite(sprite)
+        if self.badge.filters is not None:
+            for filter in self.badge.filters:
+                sprite = filter.apply_filter(sprite)
         if BADGE_BPP == grf.BPP_32:
             sprites.append(sprite)
         sprites.append(grf.QuantizeSprite(sprite))
