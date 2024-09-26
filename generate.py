@@ -5,6 +5,7 @@ from pathlib import Path
 from cairosvg import svg2png
 from PIL import Image
 from filters import SpriteFilter
+import math
 
 import lib
 import grf
@@ -181,15 +182,22 @@ class ImageBadgeSprite(grf.Sprite):
         raise grf.Uncacheable
 
 class CropSprite(grf.SpriteWrapper):
-    def __init__(self, sprite):
+    def __init__(self, sprite, zoom):
         super().__init__((sprite, ))
         self.sprite = sprite
+        self.zoom = zoom
         self.w = None
         self.h = None
 
     def get_image(self):
+        scale = lib.get_scale_for_zoom(self.zoom)
         img, bpp = self.sprite.get_image()
-        img = img.crop(img.getbbox())
+        left, top, right, bottom = img.getbbox()
+        left = int(scale * math.floor(left / scale))
+        top = int(scale * math.floor(top / scale))
+        right = int(scale * math.ceil(right / scale))
+        bottom = int(scale * math.ceil(bottom / scale))
+        img = img.crop((left, top, right, bottom))
         return img, bpp
 
 class BadgeSprites(grf.SpriteGenerator):
@@ -197,10 +205,10 @@ class BadgeSprites(grf.SpriteGenerator):
         self.badge = badge
         self.filename = str(BADGE_PATH / badge.label[0] / badge.image)
 
-    def make_badge_bpps(self, sprite):
+    def make_badge_bpps(self, sprite, zoom):
         sprites = []
         if self.badge.crop:
-            sprite = CropSprite(sprite)
+            sprite = CropSprite(sprite, zoom)
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
@@ -211,11 +219,11 @@ class BadgeSprites(grf.SpriteGenerator):
 
     def make_badge_from_svg(self, zoom, is_flag):
         sprite = SvgFlagSprite(self.badge, zoom) if is_flag else SvgBadgeSprite(self.badge, zoom)
-        return self.make_badge_bpps(sprite)
+        return self.make_badge_bpps(sprite, zoom)
 
     def make_badge_from_image(self, im, zoom):
         sprite = ImageBadgeSprite(im, zoom)
-        return self.make_badge_bpps(sprite)
+        return self.make_badge_bpps(sprite, zoom)
 
     def get_sprites(self, g):
         sprites = []
