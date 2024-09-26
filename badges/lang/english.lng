@@ -299,3 +299,20 @@ STR_PROPULSION_STEAM           :Steam
 STR_PROPULSION_DIESEL          :Diesel
 STR_PROPULSION_ELECTRIC        :Electric
 STR_PROPULSION_GAS_TURBINE     :Gas Turbine
+
+# Colours
+STR_COLOUR_COMPANY_2CC         :Dual company colour
+STR_COLOUR_COMPANY_RANDOM_1CC  :Random based on first company colour
+STR_COLOUR_COMPANY_RANDOM_2CC  :Random based on second company colour
+STR_COLOUR_RANDOM_HUE_0        :Random colours — red
+STR_COLOUR_RANDOM_HUE_30       :Random colours — orange
+STR_COLOUR_RANDOM_HUE_60       :Random colours — yellow
+STR_COLOUR_RANDOM_HUE_90       :Random colours — lime
+STR_COLOUR_RANDOM_HUE_120      :Random colours — green
+STR_COLOUR_RANDOM_HUE_150      :Random colours — emerald
+STR_COLOUR_RANDOM_HUE_180      :Random colours — cyan
+STR_COLOUR_RANDOM_HUE_210      :Random colours — azure
+STR_COLOUR_RANDOM_HUE_240      :Random colours — blue
+STR_COLOUR_RANDOM_HUE_270      :Random colours — violet
+STR_COLOUR_RANDOM_HUE_300      :Random colours — magenta
+STR_COLOUR_RANDOM_HUE_330      :Random colours — pink

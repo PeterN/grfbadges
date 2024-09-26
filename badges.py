@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
+import struct
 import grf
 import generate
+import filters
+from lib import BadgeFlags
 
 g = grf.NewGRF(
     format_version=8,
@@ -308,6 +311,15 @@ b.add("pSTE", "steam.png", "STR_PROPULSION_STEAM")
 b.add("pDIE", "diesel.png", "STR_PROPULSION_DIESEL")
 b.add("pELE", "electric.svg", "STR_PROPULSION_ELECTRIC")
 b.add("pTUR", "turbine.svg", "STR_PROPULSION_GAS_TURBINE")
+
+HUES = 12
+for h in range(0, HUES):
+    hue = h * 360 / HUES
+    b.add(b"zDI%b" % struct.pack("b", h), "dice.svg", "STR_COLOUR_RANDOM_HUE_%i" % hue, filters=[filters.AdjustHsvFilter(hue=hue),])
+
+b.add(b"zDI1", "dice.svg", "STR_COLOUR_COMPANY_RANDOM_1CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(0), None)])
+b.add(b"zDI2", "dice.svg", "STR_COLOUR_COMPANY_RANDOM_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(None, filters.HueMasker(0))])
+b.add(b"z2CC", "2cc.svg", "STR_COLOUR_COMPANY_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(300), filters.HueMasker(120))])
 
 g.add(b)
 
