@@ -8,6 +8,7 @@ STR_CLASS_FLAG         :Country/Region
 STR_CLASS_ROLE         :Role
 STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
+STR_CLASS_LIVERY       :Livery
 
 # Roles
 STR_ROLE_PASSENGER           :Passenger
@@ -300,3 +301,8 @@ STR_PROPULSION_STEAM           :Steam
 STR_PROPULSION_DIESEL          :Diesel
 STR_PROPULSION_ELECTRIC        :Electric
 STR_PROPULSION_GAS_TURBINE     :Gas Turbine
+
+# Colours
+STR_LIVERY_COMPANY_2CC         :Dual company colour (2CC)
+STR_LIVERY_COMPANY_RANDOM_1CC  :Random based on first company colour
+STR_LIVERY_COMPANY_RANDOM_2CC  :Random based on second company colour

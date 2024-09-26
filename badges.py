@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
+import struct
 import grf
 import generate
+import filters
+from lib import BadgeFlags
 from pathlib import Path
 
 g = grf.NewGRF(
@@ -17,12 +20,14 @@ BADGE_CLASS_FLAG = "flag"
 BADGE_CLASS_ROLE = "role"
 BADGE_CLASS_OPERATOR = "operator"
 BADGE_CLASS_POWER = "power"
+BADGE_CLASS_LIVERY = "livery"
 
 # Classes
 b.add(BADGE_CLASS_FLAG, None, "STR_CLASS_FLAG")
 b.add(BADGE_CLASS_ROLE, None, "STR_CLASS_ROLE")
 b.add(BADGE_CLASS_OPERATOR, None, "STR_CLASS_OPERATOR")
 b.add(BADGE_CLASS_POWER, None, "STR_CLASS_PROPULSION")
+b.add(BADGE_CLASS_LIVERY, None, "STR_CLASS_LIVERY")
 
 # Modes
 b.add(BADGE_CLASS_ROLE + "/passenger", None, "STR_ROLE_PASSENGER")
@@ -315,6 +320,10 @@ b.add(BADGE_CLASS_POWER + "/steam", "steam.png", "STR_PROPULSION_STEAM")
 b.add(BADGE_CLASS_POWER + "/diesel", "diesel.png", "STR_PROPULSION_DIESEL")
 b.add(BADGE_CLASS_POWER + "/electric", "electric.svg", "STR_PROPULSION_ELECTRIC")
 b.add(BADGE_CLASS_POWER + "/turbine", "turbine.svg", "STR_PROPULSION_GAS_TURBINE")
+
+b.add(BADGE_CLASS_LIVERY + "/random/1cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM_1CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(0), None)])
+b.add(BADGE_CLASS_LIVERY + "/random/2cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(None, filters.HueMasker(0))])
+b.add(BADGE_CLASS_LIVERY + "/2cc", "2cc.svg", "STR_LIVERY_COMPANY_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(300), filters.HueMasker(120))], overlay=True)
 
 g.add(b)
 
