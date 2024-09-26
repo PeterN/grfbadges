@@ -52,12 +52,13 @@ class SpriteFilter:
         raise NotImplementedError
 
 class AdjustHsvSprite(grf.SpriteWrapper):
-    def __init__(self, sprite, hue, sat, val):
+    def __init__(self, sprite, hue, sat, val, masker):
         super().__init__((sprite, ))
         self.sprite = sprite
         self.hue = hue / 360.
         self.sat = sat
         self.val = val
+        self.masker = masker
         self.w = None
         self.h = None
 
@@ -74,7 +75,15 @@ class AdjustHsvSprite(grf.SpriteWrapper):
     def get_image(self):
         img, bpp = self.sprite.get_image()
         arr = np.array(np.asarray(img).astype(float))
-        img = Image.fromarray(self.adjust_hsv(arr).astype('uint8'), 'RGBA')
+
+        if self.masker is None:
+            arr = self.adjust_hsv(arr)
+        else:
+            mask = self.masker.make_mask(arr)
+            adjust = self.adjust_hsv(arr[mask])
+            arr[mask] = adjust
+
+        img = Image.fromarray(arr.astype('uint8'), 'RGBA')
         return img, bpp
 
     def get_fingerprint(self):
@@ -84,13 +93,15 @@ class AdjustHsvSprite(grf.SpriteWrapper):
             'hue': self.hue,
             'sat': self.sat,
             'val': self.val,
+            'masker': None if self.masker is None else self.masker.get_fingerprint()
         }
 
 class AdjustHsvFilter(SpriteFilter):
-    def __init__(self, *, hue = 0., sat = 1., val = 1.):
+    def __init__(self, *, hue=0., sat=1., val=1, masker=None):
         self.hue = hue
         self.sat = sat
         self.val = val
+        self.masker = masker
 
     def apply_filter(self, sprite):
-        return AdjustHsvSprite(sprite, self.hue, self.sat, self.val)
+        return AdjustHsvSprite(sprite, self.hue, self.sat, self.val, self.masker)
