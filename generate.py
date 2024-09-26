@@ -151,13 +151,13 @@ class BlendOverlaySprite(grf.SpriteWrapper):
 class SvgBadgeSprite(BadgeSprite):
     def __init__(self, badge, zoom):
         super().__init__(badge, zoom)
-        scale = lib.get_scale_for_zoom(self.zoom)
-        self.w = int(BADGE_HEIGHT * scale * 4 / 3)
-        self.h = int(BADGE_HEIGHT * scale)
+        self.w = None
+        self.h = None
         self.image = None
 
     def load(self):
-        flag = svg2png(url=self.file.path, output_width=self.w, output_height=self.h)
+        scale = lib.get_scale_for_zoom(self.zoom)
+        flag = svg2png(url=self.file.path, scale=scale * 0.25)
         f = io.BytesIO(flag)
         im = grf.Image.open(f).convert(mode="RGBA")
         return im, grf.BPP_32
