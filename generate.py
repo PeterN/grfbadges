@@ -42,7 +42,11 @@ flag_overlays = BadgeOverlays("flag-overlay")
 
 class Badge(grf.SpriteGenerator):
     def __init__(self, id, label, image, string, flags=None, crop=True, filters=None):
-        label_bytes = grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))
+        if (isinstance(label, bytes)):
+            label_bytes = label
+            label = str(label, encoding="unicode_escape")
+        else:
+            label_bytes = grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))
         if len(label_bytes) != 4:
             raise ValueError("label must be 4 bytes")
         if string is not None and not isinstance(string, grf.StringRef):
