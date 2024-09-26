@@ -26,8 +26,8 @@ class AdjustHsvSprite(grf.SpriteWrapper):
         r, g, b, a = np.rollaxis(arr, axis=-1)
         h, s, v = rgb_to_hsv(r, g, b)
         h = (h + self.hue) % 1.
-        s = s * self.sat
-        v = v * self.val
+        s = np.clip(s * self.sat, 0, 1)
+        v = np.clip(v * self.val, 0, 255)
         r, g, b = hsv_to_rgb(h, s, v)
         arr = np.dstack((r, g, b, a))
         return arr
