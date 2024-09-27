@@ -12,7 +12,7 @@ import grf
 
 BADGE_PATH = Path("badges")
 BADGE_ZOOM = grf.ZOOM_2X
-BADGE_BPP = grf.BPP_32
+BADGE_BPP = [grf.BPP_32, grf.BPP_8]
 
 # Base sizes at 1x zoom.
 BADGE_HEIGHT = int(12)
@@ -216,9 +216,8 @@ class BadgeSprites(grf.SpriteGenerator):
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
-        if BADGE_BPP == grf.BPP_32:
-            sprites.append(sprite)
-        sprites.append(grf.QuantizeSprite(sprite))
+        if grf.BPP_32 in BADGE_BPP: sprites.append(sprite)
+        if grf.BPP_8 in BADGE_BPP: sprites.append(grf.QuantizeSprite(sprite))
         return sprites
 
     def make_badge_from_svg(self, zoom, is_flag):
