@@ -78,19 +78,31 @@ class AdjustHsvSprite(grf.SpriteWrapper):
         arr = np.dstack((r, g, b, a))
         return arr
 
-    def get_image(self):
-        img, bpp = self.sprite.get_image()
-        arr = np.array(np.asarray(img).astype(float))
+    def get_data_layers(self, context):
+        w, h, rgb, alpha, mask = self.sprite.get_data_layers(context)
+
+        if rgb is None or alpha is None:
+            raise RuntimeError(f"{self.__class__.__name__} requires RGB and Alpha data layers")
+
+        timer = context.start_timer()
+
+        rgba = np.dstack((rgb, alpha)).astype(float)
 
         if self.masker is None:
-            arr = self.adjust_hsv(arr)
+            rgba = self.adjust_hsv(rgba)
         else:
-            mask = self.masker.make_mask(arr)
-            adjust = self.adjust_hsv(arr[mask])
-            arr[mask] = adjust
+            filter_mask = self.masker.make_mask(rgba)
+            adjust = self.adjust_hsv(rgba[filter_mask])
+            rgba[filter_mask] = adjust
 
-        img = Image.fromarray(arr.astype('uint8'), 'RGBA')
-        return img, bpp
+        if self.bpp == grf.BPP_32:
+            rgb, alpha = rgba[:, :, :3].astype('uint8'), rgba[:, :, 3].astype('uint8')
+        else:
+            rgb, alpha = rgba[:, :, :3].astype('uint8'), None
+
+        timer.count_custom(f'{self.__class__.__name__} processing')
+
+        return w, h, rgb, alpha, mask
 
     def get_fingerprint(self):
         return {
