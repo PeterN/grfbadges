@@ -4,7 +4,7 @@ import io
 from pathlib import Path
 from cairosvg import svg2png
 from PIL import Image
-from filters import SpriteFilter
+from filters import SpriteFilter, QuantizeSprite
 import math
 
 import lib
@@ -217,7 +217,7 @@ class BadgeSprites(grf.SpriteGenerator):
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
         if grf.BPP_32 in BADGE_BPP: sprites.append(sprite)
-        if grf.BPP_8 in BADGE_BPP: sprites.append(grf.QuantizeSprite(sprite))
+        if grf.BPP_8 in BADGE_BPP: sprites.append(QuantizeSprite(sprite))
         return sprites
 
     def make_badge_from_svg(self, zoom, is_flag):

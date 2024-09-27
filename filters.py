@@ -184,3 +184,59 @@ class MakeCCFilter(SpriteFilter):
 
     def apply_filter(self, sprite):
         return MakeCCSprite(sprite, self.maskercc1, self.maskercc2)
+
+class QuantizeSprite(grf.SpriteWrapper):
+    def __init__(self, sprite):
+        super().__init__((sprite, ))
+        self.sprite = sprite
+        self.bpp = grf.BPP_8
+        self.w = None
+        self.h = None
+
+    def get_data_layers(self, context):
+        w, h, rgb, alpha, mask = self.sprite.get_data_layers(context)
+
+        if rgb is None or alpha is None:
+            raise RuntimeError(f"{self.__class__.__name__} requires RGB and Alpha data layers")
+
+        timer = context.start_timer()
+
+        # Create palette image (could be refactored to be reused instead of created every time)
+        palette_img = Image.new('P', (16, 16))
+        SAFE_PALETTE = sum([grf.PIL_PALETTE[3 * i: 3 * i + 3] for i in grf.SAFE_COLOURS], ())
+        palette_img.putpalette(SAFE_PALETTE)
+
+        rgba = np.dstack((rgb, alpha))
+
+        transparent = (alpha < 128)
+        if mask is not None:
+            masked = (mask > 0)
+        else:
+            masked = None
+
+        # Use PIL to quantize the image
+        img = Image.fromarray(rgba[:, :, :3])
+        img8 = img.quantize(palette=palette_img, dither=0)
+        npimg8 = np.array(img8)
+
+        # Use numpy to remap non-safe colours?
+        remap = np.array(grf.SAFE_COLOURS, dtype=np.uint8)
+        npimg8 = remap[npimg8]
+
+        # Transparent pixels should have palette index 0.
+        if transparent is not None:
+            npimg8[transparent] = 0
+
+        # Reapply original mask pixels.
+        if masked is not None:
+            npimg8[masked] = mask[masked]
+
+        timer.count_custom(f'{self.__class__.__name__} processing')
+
+        return w, h, None, None, npimg8
+
+    def get_fingerprint(self):
+        return {
+            'class': self.__class__.__name__,
+            'sprite': self.sprite.get_fingerprint(),
+        }
