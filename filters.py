@@ -142,29 +142,30 @@ class MakeCCSprite(grf.SpriteWrapper):
         npimg[cc_mask, 2] = vtb[value]
         mask[cc_mask] = vti[value] + first
 
-    def get_image(self):
-        return self.sprite.get_image()
-
     def get_data_layers(self, context):
-        w, h, img, bpp = self._do_get_image(context)
+        w, h, rgb, alpha, mask = self.sprite.get_data_layers(context)
+
+        if rgb is None or alpha is None:
+            raise RuntimeError(f"{self.__class__.__name__} requires RGB and Alpha data layers")
 
         timer = context.start_timer()
 
-        self.bpp = bpp
-        npimg = np.asarray(img).copy()
+        self.bpp = self.sprite.bpp
+
+        rgna = np.dstack((rgb, alpha))
         mask = np.zeros((h, w), dtype=np.uint8)
 
-        if self.maskercc1 is not None: maskcc1 = self.maskercc1.make_mask(npimg)
-        if self.maskercc2 is not None: maskcc2 = self.maskercc2.make_mask(npimg)
-        if self.maskercc1 is not None: self.apply_cc(npimg, mask, CC_ONE, maskcc1)
-        if self.maskercc2 is not None: self.apply_cc(npimg, mask, CC_TWO, maskcc2)
+        if self.maskercc1 is not None: maskcc1 = self.maskercc1.make_mask(rgna)
+        if self.maskercc2 is not None: maskcc2 = self.maskercc2.make_mask(rgna)
+        if self.maskercc1 is not None: self.apply_cc(rgna, mask, CC_ONE, maskcc1)
+        if self.maskercc2 is not None: self.apply_cc(rgna, mask, CC_TWO, maskcc2)
 
-        if bpp == grf.BPP_32:
-            rgb, alpha = npimg[:, :, :3], npimg[:, :, 3]
+        if self.bpp == grf.BPP_32:
+            rgb, alpha = rgna[:, :, :3], rgna[:, :, 3]
         else:
-            rgb, alpha = npimg, None
+            rgb, alpha = rgna, None
 
-        timer.count_custom('Mask-to-CC processing')
+        timer.count_custom(f'{self.__class__.__name__} processing')
 
         return w, h, rgb, alpha, mask
 
