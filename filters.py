@@ -185,6 +185,33 @@ class MakeCCFilter(SpriteFilter):
     def apply_filter(self, sprite):
         return MakeCCSprite(sprite, self.maskercc1, self.maskercc2)
 
+class PaletteImage:
+    def __init__(self, colours):
+        self.colours = colours
+        self.palette = None
+
+    def generate(self):
+        img = Image.new('P', (16, 16))
+        pal = sum([grf.PIL_PALETTE[3 * i: 3 * i + 3] for i in self.colours], ())
+        img.putpalette(pal)
+        return img
+
+    def get_palette(self):
+        if self.palette is None:
+            self.palette = self.generate()
+
+        return self.palette
+
+    def load(self):
+        raise NotImplementedError("Call .get_palette() instead of passing directly")
+
+CC1_SAFE_COLOURS = tuple((*range(0x01, 0xC6), *range(0xCE, 0x09), 0xFF))
+CC2_SAFE_COLOURS = tuple((*range(0x01, 0x50), *range(0x58, 0x6E), *range(0xCE, 0x09), 0xFF))
+
+SAFE_PALETTE_IMG = PaletteImage(grf.SAFE_COLOURS)
+CC1_SAFE_PALETTE_IMG = PaletteImage(CC1_SAFE_COLOURS)
+CC2_SAFE_PALETTE_IMG = PaletteImage(CC2_SAFE_COLOURS)
+
 class QuantizeSprite(grf.SpriteWrapper):
     def __init__(self, sprite):
         super().__init__((sprite, ))
@@ -201,11 +228,6 @@ class QuantizeSprite(grf.SpriteWrapper):
 
         timer = context.start_timer()
 
-        # Create palette image (could be refactored to be reused instead of created every time)
-        palette_img = Image.new('P', (16, 16))
-        SAFE_PALETTE = sum([grf.PIL_PALETTE[3 * i: 3 * i + 3] for i in grf.SAFE_COLOURS], ())
-        palette_img.putpalette(SAFE_PALETTE)
-
         rgba = np.dstack((rgb, alpha))
 
         transparent = (alpha < 128)
@@ -214,9 +236,12 @@ class QuantizeSprite(grf.SpriteWrapper):
         else:
             masked = None
 
+        # If a mask is present then it likely contains CC pixels, so avoid using CC pixels when quantizing.
+        palette = SAFE_PALETTE_IMG if mask is None else CC2_SAFE_PALETTE_IMG
+
         # Use PIL to quantize the image
         img = Image.fromarray(rgba[:, :, :3])
-        img8 = img.quantize(palette=palette_img, dither=0)
+        img8 = img.quantize(palette=palette.get_palette(), dither=Image.Dither.NONE)
         npimg8 = np.array(img8)
 
         # Use numpy to remap non-safe colours?
