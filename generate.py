@@ -26,22 +26,23 @@ class BadgeOverlays:
         self.name = name
         self.overlays = {}
 
-    def get_overlay(self, zoom):
-        if zoom not in self.overlays:
+    def get_overlay(self, zoom, w, h):
+        key = (zoom, w, h)
+        if key not in self.overlays:
             if zoom == grf.ZOOM_NORMAL:
-                self.overlays[zoom] = grf.Image.open(BADGE_PATH / f"{self.name}-{FLAG_WIDTH}x{FLAG_HEIGHT}.png")
+                self.overlays[key] = grf.Image.open(BADGE_PATH / f"{self.name}-{w}x{h}.png")
             else:
                 scale = lib.get_scale_for_zoom(zoom)
-                self.overlays[zoom] = self.get_overlay(grf.ZOOM_NORMAL).resize(size=(FLAG_WIDTH * scale, FLAG_HEIGHT * scale), resample=Image.Resampling.NEAREST)
+                self.overlays[key] = self.get_overlay(grf.ZOOM_NORMAL, w, h).resize(size=(w * scale, h * scale), resample=Image.Resampling.NEAREST)
 
-        return self.overlays[zoom]
+        return self.overlays[key]
 
 # Overlay for flags to provide shading and texture. This also subdues the flag colours slightly which makes the flags
 # less accurate, but actually makes them fit in better.
 flag_overlays = BadgeOverlays("flag-overlay")
 
 class Badge(grf.SpriteGenerator):
-    def __init__(self, id, label, image, string, flags=None, crop=True, filters=None):
+    def __init__(self, id, label, image, string, flags=None, crop=True, filters=None, overlay=False):
         if (isinstance(label, bytes)):
             label_bytes = label
             label = str(label, encoding="unicode_escape")
@@ -64,6 +65,7 @@ class Badge(grf.SpriteGenerator):
         self.flags = flags
         self.crop = crop
         self.filters = filters
+        self.overlay = overlay
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -81,8 +83,8 @@ class Badges(grf.SpriteGenerator):
         else:
             self.s = s
 
-    def add(self, label, image, string, flags=None, filters=None):
-        self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags, filters=filters))
+    def add(self, label, image, string, flags=None, filters=None, overlay=False):
+        self.badges.append(Badge(self.next_id, label, image, None if string is None else self.s[string], flags, filters=filters, overlay=overlay))
         self.next_id += 1
 
     def get_sprites(self, g):
@@ -133,8 +135,26 @@ class SvgFlagSprite(BadgeSprite):
         flag = svg2png(url=self.file.path, output_height=self.h)
         f = io.BytesIO(flag)
         im = grf.Image.open(f).convert(mode="RGBA").resize((self.w, self.h))
-        im = Image.blend(im, flag_overlays.get_overlay(self.zoom), 0.25)
         return im, grf.BPP_32
+
+class BlendOverlaySprite(grf.SpriteWrapper):
+    def __init__(self, sprite):
+        super().__init__((sprite, ))
+        self.sprite = sprite
+        self.w = None
+        self.h = None
+
+    def get_image(self):
+        scale = lib.get_scale_for_zoom(self.sprite.zoom)
+        img, bpp = self.sprite.get_image()
+        img = Image.blend(img, flag_overlays.get_overlay(self.sprite.zoom, math.ceil(img.size[0] / scale), math.ceil(img.size[1] / scale)), 0.25)
+        return img, bpp
+
+    def get_fingerprint(self):
+        return {
+            'class': self.__class__.__name__,
+            'sprite': self.sprite.get_fingerprint(),
+        }
 
 class SvgBadgeSprite(BadgeSprite):
     def __init__(self, badge, zoom):
@@ -213,6 +233,8 @@ class BadgeSprites(grf.SpriteGenerator):
         sprites = []
         if self.badge.crop:
             sprite = CropSprite(sprite, zoom)
+        if self.badge.overlay:
+            sprite = BlendOverlaySprite(sprite)
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
@@ -221,7 +243,7 @@ class BadgeSprites(grf.SpriteGenerator):
         return sprites
 
     def make_badge_from_svg(self, zoom, is_flag):
-        sprite = SvgFlagSprite(self.badge, zoom) if is_flag else SvgBadgeSprite(self.badge, zoom)
+        sprite = BlendOverlaySprite(SvgFlagSprite(self.badge, zoom)) if is_flag else SvgBadgeSprite(self.badge, zoom)
         return self.make_badge_bpps(sprite, zoom)
 
     def make_badge_from_image(self, im, zoom):
