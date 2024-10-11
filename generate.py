@@ -171,17 +171,26 @@ class SvgBadgeSprite(BadgeSprite):
         return im, grf.BPP_32
 
 class ReusableImage:
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, file):
+        self.file = grf.ResourceFile(str(file))
         self.image = None
 
     def load(self):
-        return grf.Image.open(self.filename).convert(mode="RGBA")
+        return grf.Image.open(self.file.path).convert(mode="RGBA")
 
     def get_image(self):
         if self.image is None:
             self.image = self.load()
         return self.image
+
+    def get_resource_files(self):
+        return super().get_resource_files() + (self.file,)
+
+    def get_fingerprint(self):
+        return {
+            'class': self.__class__.__name__,
+            'filename': self.file.path,
+        }
 
 class ImageBadgeSprite(grf.Sprite):
     def __init__(self, image, zoom):
