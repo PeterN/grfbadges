@@ -3,6 +3,7 @@
 
 import struct
 import grf
+import lib
 
 THIS_FILE = grf.PythonFile(__file__)
 
@@ -12,71 +13,90 @@ g = grf.NewGRF(
     description='Applies some badges to the default vehicles',
 )
 
+grf.actions.ACTION0_PROP_DICT[grf.TRAIN]['badges'] = (0x32, lib.WordListProperty())
+grf.actions.ACTION0_PROP_DICT[grf.GLOBAL_VAR]['badge_table'] = (0x18, lib.StringProperty())
 
-from grf.actions import Property
+class BadgeTranslationTable(grf.SpriteGenerator):
+    def __init__(self):
+        self.labels = []
 
-class DwordListProperty(Property):
-    def validate(cls, value):
-        if not isinstance(value, (list, tuple)):
-            raise ValueError(f'list or tuple object expected')
-        if not all(isinstance(x, int) and 0 <= x < 256 for x in value):
-            raise ValueError(f'expected integer values in range 0..255')
-        if len(value) % 4 != 0:
-            raise ValueError(f'expected 4-byte values')
+    def add(self, label):
+        self.labels.append(label)
+        return len(self.labels) - 1
 
-    def read(cls, data, ofs):
-        n = data[ofs]
-        res = tuple(map(int, data[ofs + 1: ofs + 1 + n]))
-        return res, ofs + 1 + n
+    def get_sprites(self, g):
+        return [
+            grf.DefineMultiple(
+                feature=grf.GLOBAL_VAR,
+                first_id=0,
+                count=len(self.labels),
+                props={
+                    'badge_table': [grf.to_bytes(l) for l in self.labels]
+                }
+            )
+        ]
 
-    def encode(cls, value):
-        return struct.pack('<B', int(len(value) / 4)) + bytes(value)
+    def map_labels(self, labels):
+        if self.labels is None:
+            raise RuntimeError(f'`{self.__class__.__name__}.map_labels` requires labels to be added')
+        return [self.labels.index(l) for l in labels]
 
-class BadgeListProperty(DwordListProperty):
-    pass
+btt = BadgeTranslationTable()
 
-from grf.actions import ACTION0_PROP_DICT
-ACTION0_PROP_DICT[grf.TRAIN]['badges'] = (0x32, BadgeListProperty())
+POWER_STEAM = btt.add('power/steam')
+POWER_DIESEL = btt.add('power/diesel')
+POWER_TURBINE = btt.add('power/turbine')
+POWER_ELECTRIC = btt.add('power/electric')
+POWER_MONORAIL = btt.add('power/monorail')
+POWER_MAGLEV = btt.add('power/maglev')
+
+FLAG_DE = btt.add('flag/DE')
+FLAG_EU = btt.add('flag/EU')
+FLAG_FR = btt.add('flag/FR')
+FLAG_GB = btt.add('flag/GB')
+FLAG_US = btt.add('flag/US')
+FLAG_ZA = btt.add('flag/ZA')
 
 train = {}
-train[0] = ['pSTE', 'fGB ']
-train[1] = ['pDIE', 'fUS ']
-train[2] = ['pSTE']
-train[3] = ['pSTE']
-train[4] = ['pSTE']
-train[5] = ['pDIE']
-train[6] = ['pDIE']
-train[7] = ['pSTE', 'fUS ']
-train[8] = ['pSTE', 'fGB ']
-train[9] = ['pSTE', 'fGB ']
-train[10] = ['pSTE', 'fGB ']
-train[11] = ['pDIE', 'fGB ']
-train[12] = ['pDIE', 'fGB ']
-train[13] = ['pDIE', 'fGB ']
-train[14] = ['pDIE', 'fGB ']
-train[15] = ['pDIE', 'fGB ']
-train[16] = ['pDIE', 'fDE ']
-train[17] = ['pDIE', 'fUS ']
-train[18] = ['pDIE', 'fUS ']
-train[19] = ['pDIE', 'fUS ']
-train[20] = ['pTUR', 'fUS ']
-train[21] = ['pDIE', 'fZA ']
-train[22] = ['pDIE', 'fGB ']
-train[23] = ['pELE', 'fGB ']
-train[24] = ['pELE', 'fGB ']
-train[25] = ['pELE', 'fFR ']
-train[26] = ['pELE', 'fEU ']
-train[54] = ['pMON', 'pELE']
-train[55] = ['pMON', 'pELE']
-train[56] = ['pMON', 'pELE']
-train[84] = ['pMAG', 'pELE']
-train[85] = ['pMAG', 'pELE']
-train[86] = ['pMAG', 'pELE']
-train[87] = ['pMAG', 'pELE']
-train[88] = ['pMAG', 'pELE']
+train[0] = [POWER_STEAM, FLAG_GB]
+train[1] = [POWER_DIESEL, FLAG_US]
+train[2] = [POWER_STEAM]
+train[3] = [POWER_STEAM]
+train[4] = [POWER_STEAM]
+train[5] = [POWER_DIESEL]
+train[6] = [POWER_DIESEL]
+train[7] = [POWER_STEAM, FLAG_US]
+train[8] = [POWER_STEAM, FLAG_GB]
+train[9] = [POWER_STEAM, FLAG_GB]
+train[10] = [POWER_STEAM, FLAG_GB]
+train[11] = [POWER_DIESEL, FLAG_GB]
+train[12] = [POWER_DIESEL, FLAG_GB]
+train[13] = [POWER_DIESEL, FLAG_GB]
+train[14] = [POWER_DIESEL, FLAG_GB]
+train[15] = [POWER_DIESEL, FLAG_GB]
+train[16] = [POWER_DIESEL, FLAG_DE]
+train[17] = [POWER_DIESEL, FLAG_US]
+train[18] = [POWER_DIESEL, FLAG_US]
+train[19] = [POWER_DIESEL, FLAG_US]
+train[20] = [POWER_TURBINE, FLAG_US]
+train[21] = [POWER_DIESEL, FLAG_ZA]
+train[22] = [POWER_DIESEL, FLAG_GB]
+train[23] = [POWER_ELECTRIC, FLAG_GB]
+train[24] = [POWER_ELECTRIC, FLAG_GB]
+train[25] = [POWER_ELECTRIC, FLAG_FR]
+train[26] = [POWER_ELECTRIC, FLAG_EU]
+train[54] = [POWER_MONORAIL, POWER_ELECTRIC]
+train[55] = [POWER_MONORAIL, POWER_ELECTRIC]
+train[56] = [POWER_MONORAIL, POWER_ELECTRIC]
+train[84] = [POWER_MAGLEV, POWER_ELECTRIC]
+train[85] = [POWER_MAGLEV, POWER_ELECTRIC]
+train[86] = [POWER_MAGLEV, POWER_ELECTRIC]
+train[87] = [POWER_MAGLEV, POWER_ELECTRIC]
+train[88] = [POWER_MAGLEV, POWER_ELECTRIC]
+
+g.add(btt)
 
 for (first, values) in grf.combine_ranges((b, train[b]) for b in train):
-    badges = [[byte for byte in grf.to_bytes(''.join(map(str, label)))] for label in values]
-    g.add(definition := grf.DefineMultiple(feature=grf.TRAIN, first_id=first, props={'badges': badges}, count=len(values)))
+    g.add(definition := grf.DefineMultiple(feature=grf.TRAIN, first_id=first, props={'badges': values}, count=len(values)))
 
 grf.main(g, 'default-badges.grf')

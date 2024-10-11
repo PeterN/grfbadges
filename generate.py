@@ -43,13 +43,6 @@ flag_overlays = BadgeOverlays("flag-overlay")
 
 class Badge(grf.SpriteGenerator):
     def __init__(self, id, label, image, string, flags=None, crop=True, filters=None, overlay=False):
-        if (isinstance(label, bytes)):
-            label_bytes = label
-            label = str(label, encoding="unicode_escape")
-        else:
-            label_bytes = grf.to_bytes(bytes(label, "utf-8").decode("unicode_escape"))
-        if len(label_bytes) != 4:
-            raise ValueError("label must be 4 bytes")
         if string is not None and not isinstance(string, grf.StringRef):
             raise ValueError("string must be None or a StringRef")
         if filters is not None:
@@ -59,7 +52,6 @@ class Badge(grf.SpriteGenerator):
 
         self.id = id
         self.label = label
-        self.label_bytes = label_bytes
         self.image = image
         self.string = string
         self.flags = flags
@@ -90,7 +82,7 @@ class Badges(grf.SpriteGenerator):
     def get_sprites(self, g):
         return [
             # Define properties
-            lib.PropertyBatcher(BADGE, "label", ((b.id, b.label_bytes) for b in self.badges if b.label is not None)),
+            lib.PropertyBatcher(BADGE, "label", ((b.id, b.label) for b in self.badges if b.label is not None)),
             lib.PropertyBatcher(BADGE, "flags", ((b.id, b.flags) for b in self.badges if b.flags is not None)),
             # Define names
             lib.StringBatcher(BADGE, ((b.id, b.string) for b in self.badges)),
