@@ -152,18 +152,18 @@ class MakeCCSprite(grf.SpriteWrapper):
 
         self.bpp = self.sprite.bpp
 
-        rgna = np.dstack((rgb, alpha))
+        rgba = np.dstack((rgb, alpha))
         mask = np.zeros((h, w), dtype=np.uint8)
 
-        if self.maskercc1 is not None: maskcc1 = self.maskercc1.make_mask(rgna)
-        if self.maskercc2 is not None: maskcc2 = self.maskercc2.make_mask(rgna)
-        if self.maskercc1 is not None: self.apply_cc(rgna, mask, CC_ONE, maskcc1)
-        if self.maskercc2 is not None: self.apply_cc(rgna, mask, CC_TWO, maskcc2)
+        if self.maskercc1 is not None: maskcc1 = self.maskercc1.make_mask(rgba)
+        if self.maskercc2 is not None: maskcc2 = self.maskercc2.make_mask(rgba)
+        if self.maskercc1 is not None: self.apply_cc(rgba, mask, CC_ONE, maskcc1)
+        if self.maskercc2 is not None: self.apply_cc(rgba, mask, CC_TWO, maskcc2)
 
         if self.bpp == grf.BPP_32:
-            rgb, alpha = rgna[:, :, :3], rgna[:, :, 3]
+            rgb, alpha = rgba[:, :, :3], rgba[:, :, 3]
         else:
-            rgb, alpha = rgna, None
+            rgb, alpha = rgba, None
 
         timer.count_custom(f'{self.__class__.__name__} processing')
 
