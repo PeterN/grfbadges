@@ -60,7 +60,7 @@ class Badge(grf.SpriteGenerator):
         self.crop = crop
         self.filters = filters
         self.overlay = overlay
-        self.sprites = None
+        self.doc_sprite = None
 
     def get_sprites(self, g):
         # In the interests of code reuse, and laziness, this produces a 'batch' of just one badge.
@@ -83,8 +83,7 @@ class Badges(grf.SpriteGenerator):
         self.next_id += 1
 
     def get_class(self, badge_class):
-        class_bytes = bytes([badge_class]) + b"\0\0\0"
-        return next((b for b in self.badges if b.label_bytes == class_bytes), None)
+        return next((b for b in self.badges if b.label == badge_class), None)
 
     def get_sprites(self, g):
         return [
@@ -103,41 +102,44 @@ class Badges(grf.SpriteGenerator):
             def write_header_class(md, c):
                 b = self.get_class(c)
                 if b is not None:
-                    md.write(f"| `\'{b.label[0]}\'` | `{bytes([b.label_bytes[0]]).hex()}` | [{str(b.string)}](#c_{b.label_bytes.hex()}) |\n")
+                    md.write(f"| `{b.label}` | [{str(b.string)}](#c_{b.label}) |\n")
 
             md.write("## Classes\n\n")
 
-            md.write("| Prefix | Hex | Name |\n")
-            md.write("| ------ | --- | ---- |\n")
+            md.write("| Prefix | Name |\n")
+            md.write("| ------ | ---- |\n")
 
             for c in sorted(classes):
                 write_header_class(md, c)
 
         def write_badge(md, b):
-            hex = b.label_bytes.hex()
-            if b.sprites is not None:
-                file = path / "images" / f"{hex}.png"
+            safer_label = b.label
+            if b.image is not None:
+                file = path / "images" / f"{safer_label}.png"
                 if not os.path.exists(file):
                     # Create image if it does not exist.
-                    sprites = b.sprites.get_sprites(None)[-1].sprites
-                    for s in sprites:
-                        if s.bpp == bpp and s.zoom == zoom:
-                            s.get_image()[0].save(path / "images" / f"{hex}.png")
+                    if b.doc_sprite is not None:
+                        try:
+                            image = b.doc_sprite.make_rgba_image()
+                            os.makedirs(os.path.dirname(path / "images" / f"{safer_label}.png"), exist_ok = True)
+                            image.save(path / "images" / f"{safer_label}.png")
+                        except Exception as e:
+                            print(f"Failed saving image for {b.label}: {e}")
 
-                md.write(f"| ![{hex}](images/{hex}.png) | `'{b.label}'` | <a name=\"b_{hex}\"></a>`{hex}` | {str(b.string)} | [#](#b_{hex}) |\n")
+                md.write(f"| ![{safer_label}](images/{safer_label}.png) | <a name=\"b_{hex}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
             else:
-                md.write(f"|  | `\"{b.label}\"` | <a name=\"b_{hex}\"></a>`{hex}` | {str(b.string)} | [#](#b_{hex}) |\n")
+                md.write(f"|  | <a name=\"b_{safer_label}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
 
         def write_class(md, c):
-            class_badges = sorted([b for b in self.badges if b.label_bytes[0] == c], key=lambda b: b.label)
+            class_badges = sorted([b for b in self.badges if b.label.split("/")[0] == c], key=lambda b: b.label)
 
             b = self.get_class(c)
             if b is not None:
-                md.write(f"### <a name=\"c_{b.label_bytes.hex()}\"></a>{str(b.string)}\n\n")
+                md.write(f"### <a name=\"c_{b.label}\"></a>{str(b.string)}\n\n")
 
-            md.write("| Icon | Label | Hex | Description |   |\n")
-            md.write("| ---- | ----- | --- | ----------- | - |\n")
-            for b in [b for b in class_badges if not b.label_bytes.endswith(b"\0\0\0")]:
+            md.write("| Icon | Label | Description |   |\n")
+            md.write("| ---- | ----- | ----------- | - |\n")
+            for b in [b for b in class_badges if len(b.label.split("/")) > 1]:
                 write_badge(md, b)
 
             md.write("\n")
@@ -148,7 +150,7 @@ class Badges(grf.SpriteGenerator):
             md.write(f"# {title}\n\n")
             md.write(f"Documentation built at {datetime.now()}\n\n")
 
-            classes = set(map(lambda b: b.label_bytes[0], self.badges))
+            classes = set(map(lambda b: b.label.split("/")[0], self.badges))
             write_header(md)
 
             md.write("\n")
@@ -294,6 +296,22 @@ class CropSprite(grf.SpriteWrapper):
         img = img.crop((left, top, right, bottom))
         return img, bpp
 
+class DocSprite(grf.SpriteWrapper):
+    def __init__(self, sprite, badge):
+        super().__init__((sprite, ))
+        self.sprite = sprite
+        self.badge = badge
+        self.w = None
+        self.h = None
+
+    def get_data_layers(self, context):
+        self.badge.doc_sprite = self.sprite
+        return self.sprite.get_data_layers(context)
+
+    def get_image(self):
+        self.badge.doc_sprite = self.sprite
+        return self.sprite.get_image()
+
 class BadgeSprites(grf.SpriteGenerator):
     def __init__(self, badge):
         self.badge = badge
@@ -308,7 +326,7 @@ class BadgeSprites(grf.SpriteGenerator):
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
-        if grf.BPP_32 in BADGE_BPP: sprites.append(sprite)
+        if grf.BPP_32 in BADGE_BPP: sprites.append(DocSprite(sprite, self.badge) if zoom == grf.ZOOM_2X else sprite)
         if grf.BPP_8 in BADGE_BPP: sprites.append(QuantizeSprite(sprite))
         return sprites
 
