@@ -126,7 +126,7 @@ class Badges(grf.SpriteGenerator):
                         except Exception as e:
                             print(f"Failed saving image for {b.label}: {e}")
 
-                md.write(f"| ![{safer_label}](images/{safer_label}.png) | <a name=\"b_{hex}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
+                md.write(f"| ![{safer_label}](images/{safer_label}.png) | <a name=\"b_{safer_label}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
             else:
                 md.write(f"|  | <a name=\"b_{safer_label}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
 
