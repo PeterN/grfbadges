@@ -47,6 +47,12 @@ def register_badge_feature():
 
     return BADGE
 
+class BadgeFlags:
+    COPY = 0x01
+    NAME_LIST_STOP = 0x02
+    NAME_LIST_FIRST_ONLY = 0x04
+    USE_COMPANY_PALETTE = 0x08
+
 def get_scale_for_zoom(zoom):
     if zoom == grf.ZOOM_NORMAL: return 1
     if zoom == grf.ZOOM_2X: return 2
