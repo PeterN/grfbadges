@@ -27,7 +27,7 @@ STR_FLAG_AL            :Albania
 STR_FLAG_AM            :Armenia
 STR_FLAG_AO            :Angola
 STR_FLAG_AQ            :Antarctica
-STR_FLAG_ARA           :Arab League
+# STR_FLAG_ARA           :Arab League
 STR_FLAG_AR            :Argentina
 STR_FLAG_AS            :American Samoa
 STR_FLAG_AT            :Austria
@@ -59,7 +59,7 @@ STR_FLAG_BZ            :Belize
 STR_FLAG_CA            :Canada
 STR_FLAG_CC            :Cocos Islands
 STR_FLAG_CD            :Democratic Republic of the Congo
-STR_FLAG_CEF           :(Central European Free Trade Agreement)
+# STR_FLAG_CEF           :(Central European Free Trade Agreement)
 STR_FLAG_CF            :Central African Republic
 STR_FLAG_CG            :Republic of the Congo
 STR_FLAG_CH            :Switzerland
@@ -69,7 +69,7 @@ STR_FLAG_CL            :Chile
 STR_FLAG_CM            :Cameroon
 STR_FLAG_CN            :China
 STR_FLAG_CO            :Colombia
-STR_FLAG_CP            :(Clipperton Island)
+# STR_FLAG_CP            :(Clipperton Island)
 STR_FLAG_CR            :Costa Rica
 STR_FLAG_CU            :Cuba
 STR_FLAG_CV            :Cape Verde
@@ -78,24 +78,24 @@ STR_FLAG_CX            :Christmas Island
 STR_FLAG_CY            :Cyprus
 STR_FLAG_CZ            :Czech Republic
 STR_FLAG_DE            :Germany
-STR_FLAG_DG            :(Diego Garcia)
+# STR_FLAG_DG            :(Diego Garcia)
 STR_FLAG_DJ            :Djibouti
 STR_FLAG_DK            :Denmark
 STR_FLAG_DM            :Dominica
 STR_FLAG_DO            :Dominican Republic
 STR_FLAG_DZ            :Algeria
-STR_FLAG_EAC           :(East African Community)
+# STR_FLAG_EAC           :(East African Community)
 STR_FLAG_EC            :Ecuador
 STR_FLAG_EE            :Estonia
 STR_FLAG_EG            :Egypt
 STR_FLAG_EH            :Western Sahara
 STR_FLAG_ER            :Eritrea
-STR_FLAG_ESC           :Spain (Catalonia)
-STR_FLAG_ESG           :Spain (Galicia)
-STR_FLAG_ESP           :Spain (Basque Country)
+# STR_FLAG_ESC           :Spain (Catalonia)
+# STR_FLAG_ESG           :Spain (Galicia)
+# STR_FLAG_ESP           :Spain (Basque Country)
 STR_FLAG_ES            :Spain
 STR_FLAG_ET            :Ethiopia
-STR_FLAG_EU            :European Union
+# STR_FLAG_EU            :European Union
 STR_FLAG_FI            :Finland
 STR_FLAG_FJ            :Fiji
 STR_FLAG_FK            :Falkland Islands
@@ -103,11 +103,11 @@ STR_FLAG_FM            :Micronesia
 STR_FLAG_FO            :Faroe Islands
 STR_FLAG_FR            :France
 STR_FLAG_GA            :Andorra
-STR_FLAG_GBE           :England
-STR_FLAG_GBN           :Northern Ireland
-STR_FLAG_GBS           :Scotland
+# STR_FLAG_GBE           :England
+# STR_FLAG_GBN           :Northern Ireland
+# STR_FLAG_GBS           :Scotland
 STR_FLAG_GB            :United Kingdom
-STR_FLAG_GBW           :Wales
+# STR_FLAG_GBW           :Wales
 STR_FLAG_GD            :Grenada
 STR_FLAG_GE            :Georgia
 STR_FLAG_GF            :French Guiana
@@ -131,7 +131,7 @@ STR_FLAG_HN            :Honduras
 STR_FLAG_HR            :Croatia
 STR_FLAG_HT            :Haiti
 STR_FLAG_HU            :Hungary
-STR_FLAG_IC            :Canary Islands
+# STR_FLAG_IC            :Canary Islands
 STR_FLAG_ID            :Indonesia
 STR_FLAG_IE            :Ireland
 STR_FLAG_IL            :Israel
@@ -205,7 +205,7 @@ STR_FLAG_NU            :Niue
 STR_FLAG_NZ            :New Zealand
 STR_FLAG_OM            :Oman
 STR_FLAG_PA            :Panama
-STR_FLAG_PC            :(Pacific Community)
+# STR_FLAG_PC            :(Pacific Community)
 STR_FLAG_PE            :Peru
 STR_FLAG_PF            :French Polynesia
 STR_FLAG_PG            :Papua New Guinea
@@ -231,10 +231,10 @@ STR_FLAG_SC            :Seychelles
 STR_FLAG_SD            :Sudan
 STR_FLAG_SE            :Sweden
 STR_FLAG_SG            :Singapore
-STR_FLAG_SHA           :Ascension Island
-STR_FLAG_SHH           :Saint Helena
+# STR_FLAG_SHA           :Ascension Island
+# STR_FLAG_SHH           :Saint Helena
 STR_FLAG_SH            :Saint Helena, Ascension and Tristan da Cunha
-STR_FLAG_SHT           :Tristan da Cunha
+# STR_FLAG_SHT           :Tristan da Cunha
 STR_FLAG_SI            :Slovenia
 STR_FLAG_SJ            :Svalbard and Jan Mayen
 STR_FLAG_SK            :Slovakia
@@ -268,7 +268,7 @@ STR_FLAG_TZ            :Tanzania
 STR_FLAG_UA            :Ukraine
 STR_FLAG_UG            :Uganda
 STR_FLAG_UM            :United States Minor Outlying Islands
-STR_FLAG_UN            :(United Nations)
+# STR_FLAG_UN            :(United Nations)
 STR_FLAG_US            :United States
 STR_FLAG_UY            :Uruguay
 STR_FLAG_UZ            :Uzbekistan
@@ -281,8 +281,8 @@ STR_FLAG_VN            :Vietnam
 STR_FLAG_VU            :Vanuatu
 STR_FLAG_WF            :Wallis and Futuna
 STR_FLAG_WS            :Samoa
-STR_FLAG_XK            :Kosovo
-STR_FLAG_XX            :(Unknown)
+# STR_FLAG_XK            :Kosovo
+# STR_FLAG_XX            :(Unknown)
 STR_FLAG_YE            :Yemen
 STR_FLAG_YT            :Mayotte
 STR_FLAG_ZA            :South Africa
