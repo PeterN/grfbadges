@@ -13,7 +13,7 @@ g = grf.NewGRF(
     description='Applies some badges to the default vehicles',
 )
 
-grf.actions.ACTION0_PROP_DICT[grf.TRAIN]['badges'] = (0x32, lib.WordListProperty())
+grf.actions.ACTION0_PROP_DICT[grf.TRAIN]['badges'] = (0x33, lib.WordListProperty())
 grf.actions.ACTION0_PROP_DICT[grf.GLOBAL_VAR]['badge_table'] = (0x18, lib.StringProperty())
 
 class BadgeTranslationTable(grf.SpriteGenerator):
