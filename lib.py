@@ -8,17 +8,10 @@ class WordListProperty(grf.actions.Property):
         if not all(isinstance(x, int) and 0 <= x <= 65535 for x in value):
             raise ValueError(f'expected integer values in range 0..65535')
 
-    def read(cls, data, ofs):
-        n = data[ofs]
-        res = tuple(map(int, data[ofs + 1: ofs + 1 + n]))
-        return res, ofs + 1 + n
-
     def encode(cls, value):
         values = [struct.pack('<H', w) for w in value]
         length = len(value)
-        if length < 255:
-            return struct.pack('<B', length) + b''.join(values)
-        return struct.pack('<BH', 0xFF, length) + b''.join(values)
+        return struct.pack('H', length) + b''.join(values)
 
 class StringProperty(grf.actions.Property):
     def validate(cls, value):
@@ -26,11 +19,6 @@ class StringProperty(grf.actions.Property):
             raise ValueError(f'list or tuple object expected')
         if not all(isinstance(x, int) and 1 <= x <= 255 for x in value):
             raise ValueError(f'expected integer values in range 0..255')
-
-    def read(cls, data, ofs):
-        n = data[ofs]
-        res = tuple(map(int, data[ofs + 1: ofs + 1 + n]))
-        return res, ofs + 1 + n
 
     def encode(cls, value):
         return grf.to_bytes(value) + b'\x00'
