@@ -75,7 +75,7 @@ class StringBatcher(grf.SpriteGenerator):
         res = []
         for lang_id in lang_strings:
             for first, values in grf.combine_ranges(lang_strings[lang_id]):
-                res.append(grf.DefineStrings(feature=self.feature, offset=first, strings=values, is_generic_offset=True, lang=lang_id))
+                res.append(grf.DefineStrings(feature=self.feature, offset=first, strings=values, is_generic_offset=False, lang=lang_id))
 
         return res
 
