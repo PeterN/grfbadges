@@ -5,17 +5,17 @@ STR_DESCRIPTION        :A set of badges for common country flags, power types an
 
 # Class names
 STR_CLASS_FLAG         :Country/Region
-STR_CLASS_USAGE        :Usage
+STR_CLASS_ROLE         :Role
 STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
 
-# Modes
-STR_MODE_PASSENGER           :Passenger
-STR_MODE_FREIGHT             :Freight
-STR_MODE_MIXED               :Mixed
-STR_MODE_EXPRESS_PASSENGER   :Express passenger
-STR_MODE_EXPRESS_FREIGHT     :Express freight
-STR_MODE_HEAVY_FREIGHT       :Heavy freight
+# Roles
+STR_ROLE_PASSENGER           :Passenger
+STR_ROLE_FREIGHT             :Freight
+STR_ROLE_MIXED               :Mixed
+STR_ROLE_EXPRESS_PASSENGER   :Express passenger
+STR_ROLE_EXPRESS_FREIGHT     :Express freight
+STR_ROLE_HEAVY_FREIGHT       :Heavy freight
 
 # Country flags
 STR_FLAG_AD            :Andorra

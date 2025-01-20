@@ -14,23 +14,23 @@ g = grf.NewGRF(
 b = generate.Badges()
 
 BADGE_CLASS_FLAG = "flag"
-BADGE_CLASS_MODE = "mode"
+BADGE_CLASS_ROLE = "role"
 BADGE_CLASS_OPERATOR = "operator"
 BADGE_CLASS_POWER = "power"
 
 # Classes
 b.add(BADGE_CLASS_FLAG, None, "STR_CLASS_FLAG")
-b.add(BADGE_CLASS_MODE, None, "STR_CLASS_USAGE")
+b.add(BADGE_CLASS_ROLE, None, "STR_CLASS_ROLE")
 b.add(BADGE_CLASS_OPERATOR, None, "STR_CLASS_OPERATOR")
 b.add(BADGE_CLASS_POWER, None, "STR_CLASS_PROPULSION")
 
 # Modes
-b.add(BADGE_CLASS_MODE + "/passenger", None, "STR_MODE_PASSENGER")
-b.add(BADGE_CLASS_MODE + "/freight", None, "STR_MODE_FREIGHT")
-b.add(BADGE_CLASS_MODE + "/mixed", None, "STR_MODE_MIXED")
-b.add(BADGE_CLASS_MODE + "/express_passenger", None, "STR_MODE_EXPRESS_PASSENGER")
-b.add(BADGE_CLASS_MODE + "/express_freight", None, "STR_MODE_EXPRESS_FREIGHT")
-b.add(BADGE_CLASS_MODE + "/freight", None, "STR_MODE_HEAVY_FREIGHT")
+b.add(BADGE_CLASS_ROLE + "/passenger", None, "STR_ROLE_PASSENGER")
+b.add(BADGE_CLASS_ROLE + "/freight", None, "STR_ROLE_FREIGHT")
+b.add(BADGE_CLASS_ROLE + "/mixed", None, "STR_ROLE_MIXED")
+b.add(BADGE_CLASS_ROLE + "/express_passenger", None, "STR_ROLE_EXPRESS_PASSENGER")
+b.add(BADGE_CLASS_ROLE + "/express_freight", None, "STR_ROLE_EXPRESS_FREIGHT")
+b.add(BADGE_CLASS_ROLE + "/freight", None, "STR_ROLE_HEAVY_FREIGHT")
 
 # Country flags
 b.add(BADGE_CLASS_FLAG + "/AD", "flag-icons/ad.svg", "STR_FLAG_AD")
