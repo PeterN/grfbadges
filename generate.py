@@ -329,8 +329,8 @@ class BadgeSprites(grf.SpriteGenerator):
         if self.badge.filters is not None:
             for filter in self.badge.filters:
                 sprite = filter.apply_filter(sprite)
-        if grf.BPP_32 in BADGE_BPP: sprites.append(DocSprite(sprite, self.badge) if zoom == grf.ZOOM_2X else sprite)
         if grf.BPP_8 in BADGE_BPP: sprites.append(QuantizeSprite(sprite))
+        if grf.BPP_32 in BADGE_BPP: sprites.append(DocSprite(sprite, self.badge) if zoom == grf.ZOOM_2X else sprite)
         return sprites
 
     def make_badge_from_svg(self, zoom, is_flag):
