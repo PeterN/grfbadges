@@ -326,6 +326,7 @@ b.add(BADGE_CLASS_LIVERY + "/random/1cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM
 b.add(BADGE_CLASS_LIVERY + "/random/2cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(None, filters.HueMasker(0))])
 b.add(BADGE_CLASS_LIVERY + "/2cc", "2cc.svg", "STR_LIVERY_COMPANY_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(300), filters.HueMasker(120))], overlay=True)
 
+g.add(grf.Comment("Default Badges"))
 g.add(b)
 
 grf.main(g, "badges.grf")
