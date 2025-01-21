@@ -16,6 +16,7 @@ STR_ROLE_MIXED               :Mixed
 STR_ROLE_EXPRESS_PASSENGER   :Express passenger
 STR_ROLE_EXPRESS_FREIGHT     :Express freight
 STR_ROLE_HEAVY_FREIGHT       :Heavy freight
+STR_ROLE_RESTAURANT_CAR      :Restaurant car
 
 # Country flags
 STR_FLAG_AD            :Andorra

@@ -31,6 +31,7 @@ b.add(BADGE_CLASS_ROLE + "/mixed", None, "STR_ROLE_MIXED")
 b.add(BADGE_CLASS_ROLE + "/express_passenger", None, "STR_ROLE_EXPRESS_PASSENGER")
 b.add(BADGE_CLASS_ROLE + "/express_freight", None, "STR_ROLE_EXPRESS_FREIGHT")
 b.add(BADGE_CLASS_ROLE + "/freight", None, "STR_ROLE_HEAVY_FREIGHT")
+b.add(BADGE_CLASS_ROLE + "/restaurant_car", None, "STR_ROLE_RESTAURANT_CAR")
 
 # Country flags
 b.add(BADGE_CLASS_FLAG + "/AD", "flag-icons/ad.svg", "STR_FLAG_AD")
