@@ -68,6 +68,9 @@ class Badge(grf.SpriteGenerator):
         badges.badges.append(self)
         return badges.get_sprites(g)
 
+    def get_class(self):
+        return self.label.split("/")[0]
+
 class Badges(grf.SpriteGenerator):
     def __init__(self, s = None):
         self.badges = []
@@ -131,7 +134,7 @@ class Badges(grf.SpriteGenerator):
                 md.write(f"|  | <a name=\"b_{safer_label}\"></a>`{b.label}` | {str(b.string)} | [#](#b_{safer_label}) |\n")
 
         def write_class(md, c):
-            class_badges = sorted([b for b in self.badges if b.label.split("/")[0] == c], key=lambda b: b.label)
+            class_badges = sorted([b for b in self.badges if b.get_class() == c], key=lambda b: b.label)
 
             b = self.get_class(c)
             if b is not None:
@@ -150,7 +153,7 @@ class Badges(grf.SpriteGenerator):
             md.write(f"# {title}\n\n")
             md.write(f"Documentation built at {datetime.now()}\n\n")
 
-            classes = set(map(lambda b: b.label.split("/")[0], self.badges))
+            classes = set(map(lambda b: b.get_class(), self.badges))
             write_header(md)
 
             md.write("\n")
@@ -169,7 +172,7 @@ class BadgeSprite(grf.Sprite):
         self.crop = False
         self.xofs = 0
         self.yofs = 0
-        self.file = grf.ResourceFile(str(BADGE_PATH / self.badge.label[0] / self.badge.image))
+        self.file = grf.ResourceFile(str(BADGE_PATH / self.badge.get_class() / self.badge.image))
         self.image = None
 
     def get_image(self):
@@ -315,7 +318,7 @@ class DocSprite(grf.SpriteWrapper):
 class BadgeSprites(grf.SpriteGenerator):
     def __init__(self, badge):
         self.badge = badge
-        self.filename = str(BADGE_PATH / badge.label[0] / badge.image)
+        self.filename = str(BADGE_PATH / badge.get_class() / badge.image)
 
     def make_badge_bpps(self, sprite, zoom):
         sprites = []
