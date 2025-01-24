@@ -310,10 +310,11 @@ b.add(BADGE_CLASS_FLAG + "/ZA", "flag-icons/za.svg", "STR_FLAG_ZA")
 b.add(BADGE_CLASS_FLAG + "/ZM", "flag-icons/zm.svg", "STR_FLAG_ZM")
 b.add(BADGE_CLASS_FLAG + "/ZW", "flag-icons/zw.svg", "STR_FLAG_ZW")
 
-# Historical flags
+# Historical flags or non-ISO flags
 b.add(BADGE_CLASS_FLAG + "/yugoslavia", "Civil_Ensign_of_Yugoslavia_(1950–1992).svg", "STR_FLAG__YU")
 b.add(BADGE_CLASS_FLAG + "/east_germany", "Flag_of_East_Germany.svg", "STR_FLAG_GDR")
 b.add(BADGE_CLASS_FLAG + "/soviet_union", "Flag_of_the_Soviet_Union.svg", "STR_FLAG__SU")
+b.add(BADGE_CLASS_FLAG + "/europe", "flag-icons/eu.svg", "STR_FLAG_EUROPE")
 
 # Power types
 b.add(BADGE_CLASS_POWER + "/steam", "steam.png", "STR_PROPULSION_STEAM")
