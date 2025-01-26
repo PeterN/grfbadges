@@ -298,10 +298,22 @@ STR_FLAG__SU           :USSR
 STR_FLAG_EUROPE        :Europe
 
 # Power types
-STR_PROPULSION_STEAM           :Steam
-STR_PROPULSION_DIESEL          :Diesel
-STR_PROPULSION_ELECTRIC        :Electric
-STR_PROPULSION_GAS_TURBINE     :Gas Turbine
+STR_PROPULSION_STEAM                       :Steam
+STR_PROPULSION_DIESEL                      :Diesel
+STR_PROPULSION_DIESEL_ELECTRIC             :Diesel (Diesel-electric)
+STR_PROPULSION_DIESEL_HYDRAULIC            :Diesel (Diesel-hydraulic)
+STR_PROPULSION_ELECTRIC                    :Electric
+STR_PROPULSION_ELECTRIC_AC                 :Electric (AC)
+STR_PROPULSION_ELECTRIC_AC_15              :Electric (AC 15kV)
+STR_PROPULSION_ELECTRIC_AC_25              :Electric (AC 25kV)
+STR_PROPULSION_ELECTRIC_DC                 :Electric (DC)
+STR_PROPULSION_ELECTRIC_DC_600             :Electric (DC 600V)
+STR_PROPULSION_ELECTRIC_DC_750             :Electric (DC 750V)
+STR_PROPULSION_ELECTRIC_DC_1200            :Electric (DC 1200V)
+STR_PROPULSION_ELECTRIC_DC_1500            :Electric (DC 1500V)
+STR_PROPULSION_ELECTRIC_DC_3000            :Electric (DC 3kV)
+STR_PROPULSION_GAS_TURBINE                 :Gas Turbine
+STR_PROPULSION_BATTERY                     :Battery
 
 # Colours
 STR_LIVERY_COMPANY_2CC         :Dual company colour (2CC)
