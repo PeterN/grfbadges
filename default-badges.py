@@ -51,7 +51,7 @@ POWER_MONORAIL = btt.add('power/monorail')
 POWER_MAGLEV = btt.add('power/maglev')
 
 FLAG_DE = btt.add('flag/DE')
-FLAG_EU = btt.add('flag/EU')
+FLAG_EU = btt.add('flag/europe')
 FLAG_FR = btt.add('flag/FR')
 FLAG_GB = btt.add('flag/GB')
 FLAG_US = btt.add('flag/US')
