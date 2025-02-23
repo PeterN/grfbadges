@@ -44,6 +44,9 @@ b.add(BADGE_CLASS_ROLE + "/banking", None, "STR_ROLE_BANKING")
 b.add(BADGE_CLASS_ROLE + "/snowplough", None, "STR_ROLE_SNOWPLOUGH")
 b.add(BADGE_CLASS_ROLE + "/utility", None, "STR_ROLE_UTILITY")
 b.add(BADGE_CLASS_ROLE + "/prototype", None, "STR_ROLE_PROTOTYPE")
+b.add(BADGE_CLASS_ROLE + "/city", None, "STR_ROLE_CITY")
+b.add(BADGE_CLASS_ROLE + "/suburb", None, "STR_ROLE_SUBURB")
+b.add(BADGE_CLASS_ROLE + "/regional", None, "STR_ROLE_REGIONAL")
 
 # Country flags
 b.add(BADGE_CLASS_FLAG + "/AD", "flag-icons/ad.svg", "STR_FLAG_AD")

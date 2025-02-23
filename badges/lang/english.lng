@@ -25,6 +25,9 @@ STR_ROLE_BANKING             :Banking
 STR_ROLE_SNOWPLOUGH          :Snowplough
 STR_ROLE_UTILITY             :Utility
 STR_ROLE_PROTOTYPE           :Prototype
+STR_ROLE_CITY                :City
+STR_ROLE_SUBURB              :Suburban
+STR_ROLE_REGIONAL            :Regional
 
 # Country flags
 STR_FLAG_AD            :Andorra
