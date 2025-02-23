@@ -324,6 +324,9 @@ STR_PROPULSION_ELECTRIC_DC_1500            :Electric (DC 1500V)
 STR_PROPULSION_ELECTRIC_DC_3000            :Electric (DC 3kV)
 STR_PROPULSION_GAS_TURBINE                 :Gas Turbine
 STR_PROPULSION_BATTERY                     :Battery
+STR_PROPULSION_GASOLINE                    :Petrol
+STR_PROPULSION_NATURAL_GAS                 :Natural Gas
+STR_PROPULSION_HYDROGEN                    :Hydrogen
 
 # Colours
 STR_LIVERY_COMPANY_FIRSTCC     :Primary company colour

@@ -343,6 +343,9 @@ b.add(BADGE_CLASS_POWER + "/electric/dc/1500v", "electric_dc.svg", "STR_PROPULSI
 b.add(BADGE_CLASS_POWER + "/electric/dc/3kv", "electric_dc.svg", "STR_PROPULSION_ELECTRIC_DC_3000", filters=[filters.AdjustHsvFilter(hue=10)])
 b.add(BADGE_CLASS_POWER + "/turbine", "turbine.svg", "STR_PROPULSION_GAS_TURBINE")
 b.add(BADGE_CLASS_POWER + "/battery", "battery.svg", "STR_PROPULSION_BATTERY")
+b.add(BADGE_CLASS_POWER + "/gasoline", None, "STR_PROPULSION_GASOLINE")
+b.add(BADGE_CLASS_POWER + "/natural_gas", None, "STR_PROPULSION_NATURAL_GAS")
+b.add(BADGE_CLASS_POWER + "/hydrogen", None, "STR_PROPULSION_HYDROGEN")
 
 b.add(BADGE_CLASS_LIVERY + "/company/primary", None, "STR_LIVERY_COMPANY_FIRSTCC")
 b.add(BADGE_CLASS_LIVERY + "/company/secondary", None, "STR_LIVERY_COMPANY_SECONDCC")
