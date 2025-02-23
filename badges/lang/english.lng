@@ -323,6 +323,8 @@ STR_PROPULSION_GAS_TURBINE                 :Gas Turbine
 STR_PROPULSION_BATTERY                     :Battery
 
 # Colours
+STR_LIVERY_COMPANY_FIRSTCC     :Primary company colour
+STR_LIVERY_COMPANY_SECONDCC    :Secondary company colour
 STR_LIVERY_COMPANY_2CC         :Dual company colour (2CC)
 STR_LIVERY_COMPANY_RANDOM_1CC  :Random based on first company colour
 STR_LIVERY_COMPANY_RANDOM_2CC  :Random based on second company colour

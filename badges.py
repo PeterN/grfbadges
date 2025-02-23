@@ -341,9 +341,11 @@ b.add(BADGE_CLASS_POWER + "/electric/dc/3kv", "electric_dc.svg", "STR_PROPULSION
 b.add(BADGE_CLASS_POWER + "/turbine", "turbine.svg", "STR_PROPULSION_GAS_TURBINE")
 b.add(BADGE_CLASS_POWER + "/battery", "battery.svg", "STR_PROPULSION_BATTERY")
 
+b.add(BADGE_CLASS_LIVERY + "/company/primary", None, "STR_LIVERY_COMPANY_FIRSTCC")
+b.add(BADGE_CLASS_LIVERY + "/company/secondary", None, "STR_LIVERY_COMPANY_SECONDCC")
+b.add(BADGE_CLASS_LIVERY + "/company/2cc", "2cc.svg", "STR_LIVERY_COMPANY_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(300), filters.HueMasker(120))], overlay=True)
 b.add(BADGE_CLASS_LIVERY + "/random/1cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM_1CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(0), None)])
 b.add(BADGE_CLASS_LIVERY + "/random/2cc", "dice.svg", "STR_LIVERY_COMPANY_RANDOM_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(None, filters.HueMasker(0))])
-b.add(BADGE_CLASS_LIVERY + "/2cc", "2cc.svg", "STR_LIVERY_COMPANY_2CC", flags=BadgeFlags.USE_COMPANY_PALETTE, filters=[filters.MakeCCFilter(filters.HueMasker(300), filters.HueMasker(120))], overlay=True)
 
 g.add(grf.Comment("Default Badges"))
 g.add(b)
