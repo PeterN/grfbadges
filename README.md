@@ -1,6 +1,8 @@
 # grfbadges
 NewGRF Badges
 
+Generated documentation is available at https://petern.github.io/grfbadges-docs/badges/
+
 ## Licensing
 
 grfbadges is licensed under the GNU General Public License version 3.0.
