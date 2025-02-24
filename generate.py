@@ -345,7 +345,7 @@ class BadgeSprites(grf.SpriteGenerator):
         sprites = []
         if self.badge.image.endswith(".svg"):
             # Badges in the flag class have the flag overlay applied
-            is_flag = self.badge.label[0] == "f"
+            is_flag = self.badge.label.startswith("flag/")
             sprites.extend(self.make_badge_from_svg(grf.ZOOM_NORMAL, is_flag))
             if BADGE_ZOOM == grf.ZOOM_2X or BADGE_ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_2X, is_flag))
             if BADGE_ZOOM == grf.ZOOM_4X: sprites.extend(self.make_badge_from_svg(grf.ZOOM_4X, is_flag))
