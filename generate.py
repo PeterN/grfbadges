@@ -334,7 +334,12 @@ class BadgeSprites(grf.SpriteGenerator):
         return sprites
 
     def make_badge_from_svg(self, zoom, is_flag):
-        sprite = BlendOverlaySprite(SvgFlagSprite(self.badge, zoom)) if is_flag else SvgBadgeSprite(self.badge, zoom)
+        if is_flag:
+            sprite = SvgFlagSprite(self.badge, zoom)
+            if self.badge.label != 'flag/NP':
+                sprite = BlendOverlaySprite(sprite)
+        else:
+            sprite = SvgBadgeSprite(self.badge, zoom)
         return self.make_badge_bpps(sprite, zoom)
 
     def make_badge_from_image(self, im, zoom):
