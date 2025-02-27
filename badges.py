@@ -21,6 +21,7 @@ BADGE_CLASS_ROLE = "role"
 BADGE_CLASS_OPERATOR = "operator"
 BADGE_CLASS_POWER = "power"
 BADGE_CLASS_LIVERY = "livery"
+BADGE_CLASS_REGION = "region"
 
 # Classes
 b.add(BADGE_CLASS_FLAG, None, "STR_CLASS_FLAG")
@@ -28,6 +29,7 @@ b.add(BADGE_CLASS_ROLE, None, "STR_CLASS_ROLE")
 b.add(BADGE_CLASS_OPERATOR, None, "STR_CLASS_OPERATOR")
 b.add(BADGE_CLASS_POWER, None, "STR_CLASS_PROPULSION")
 b.add(BADGE_CLASS_LIVERY, None, "STR_CLASS_LIVERY")
+b.add(BADGE_CLASS_REGION, None, "STR_CLASS_REGION")
 
 # Modes
 b.add(BADGE_CLASS_ROLE + "/passenger", None, "STR_ROLE_PASSENGER")
@@ -44,6 +46,35 @@ b.add(BADGE_CLASS_ROLE + "/banking", None, "STR_ROLE_BANKING")
 b.add(BADGE_CLASS_ROLE + "/snowplough", None, "STR_ROLE_SNOWPLOUGH")
 b.add(BADGE_CLASS_ROLE + "/utility", None, "STR_ROLE_UTILITY")
 b.add(BADGE_CLASS_ROLE + "/prototype", None, "STR_ROLE_PROTOTYPE")
+
+# Regions
+b.add(BADGE_CLASS_REGION + "/america", None, "STR_REGION_AMERICA")
+b.add(BADGE_CLASS_REGION + "/america/northern", None, "STR_REGION_AMERICA_NORTHERN")
+b.add(BADGE_CLASS_REGION + "/america/central", None, "STR_REGION_AMERICA_CENTRAL")
+b.add(BADGE_CLASS_REGION + "/america/south", None, "STR_REGION_AMERICA_SOUTH")
+b.add(BADGE_CLASS_REGION + "/america/caribbean", None, "STR_REGION_AMERICA_CARIBBEAN")
+b.add(BADGE_CLASS_REGION + "/europe", None, "STR_REGION_EUROPE")
+b.add(BADGE_CLASS_REGION + "/europe/northern", None, "STR_REGION_EUROPE_NORTHERN")
+b.add(BADGE_CLASS_REGION + "/europe/western", None, "STR_REGION_EUROPE_WESTERN")
+b.add(BADGE_CLASS_REGION + "/europe/southern", None, "STR_REGION_EUROPE_SOUTHERN")
+b.add(BADGE_CLASS_REGION + "/europe/eastern", None, "STR_REGION_EUROPE_EASTERN")
+b.add(BADGE_CLASS_REGION + "/africa", None, "STR_REGION_AFRICA")
+b.add(BADGE_CLASS_REGION + "/africa/northern", None, "STR_REGION_AFRICA_NORTHERN")
+b.add(BADGE_CLASS_REGION + "/africa/western", None, "STR_REGION_AFRICA_WESTERN")
+b.add(BADGE_CLASS_REGION + "/africa/middle", None, "STR_REGION_AFRICA_MIDDLE")
+b.add(BADGE_CLASS_REGION + "/africa/eastern", None, "STR_REGION_AFRICA_EASTERN")
+b.add(BADGE_CLASS_REGION + "/africa/southern", None, "STR_REGION_AFRICA_SOUTHERN")
+b.add(BADGE_CLASS_REGION + "/asia", None, "STR_REGION_ASIA")
+b.add(BADGE_CLASS_REGION + "/asia/western", None, "STR_REGION_ASIA_WESTERN")
+b.add(BADGE_CLASS_REGION + "/asia/central", None, "STR_REGION_ASIA_CENTRAL")
+b.add(BADGE_CLASS_REGION + "/asia/eastern", None, "STR_REGION_ASIA_EASTERN")
+b.add(BADGE_CLASS_REGION + "/asia/southern", None, "STR_REGION_ASIA_SOUTHERN")
+b.add(BADGE_CLASS_REGION + "/asia/southeastern", None, "STR_REGION_ASIA_SOUTHEASTERN")
+b.add(BADGE_CLASS_REGION + "/oceania", None, "STR_REGION_OCEANIA")
+b.add(BADGE_CLASS_REGION + "/oceania/micronesia", None, "STR_REGION_OCEANIA_MICRONESIA")
+b.add(BADGE_CLASS_REGION + "/oceania/melanesia", None, "STR_REGION_OCEANIA_MELANESIA")
+b.add(BADGE_CLASS_REGION + "/oceania/polynesia", None, "STR_REGION_OCEANIA_POLYNESIA")
+b.add(BADGE_CLASS_REGION + "/oceania/australia_and_new_zealand", None, "STR_REGION_OCEANIA_AUSTRALIA_AND_NEW_ZEALAND")
 
 # Country flags
 b.add(BADGE_CLASS_FLAG + "/AD", "flag-icons/ad.svg", "STR_FLAG_AD")

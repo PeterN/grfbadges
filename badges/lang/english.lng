@@ -9,6 +9,7 @@ STR_CLASS_ROLE         :Role
 STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
 STR_CLASS_LIVERY       :Livery
+STR_CLASS_REGION       :Region
 
 # Roles
 STR_ROLE_PASSENGER           :Passenger
@@ -25,6 +26,35 @@ STR_ROLE_BANKING             :Banking
 STR_ROLE_SNOWPLOUGH          :Snowplough
 STR_ROLE_UTILITY             :Utility
 STR_ROLE_PROTOTYPE           :Prototype
+
+# Regions
+STR_REGION_AMERICA                               :Americas
+STR_REGION_AMERICA_NORTHERN                      :Northern America
+STR_REGION_AMERICA_CENTRAL                       :Central America
+STR_REGION_AMERICA_SOUTH                         :South America
+STR_REGION_AMERICA_CARIBBEAN                     :Caribbean
+STR_REGION_EUROPE                                :Europe
+STR_REGION_EUROPE_NORTHERN                       :Northern Europe
+STR_REGION_EUROPE_WESTERN                        :Western Europe
+STR_REGION_EUROPE_SOUTHERN                       :Southern Europe
+STR_REGION_EUROPE_EASTERN                        :Eastern Europe
+STR_REGION_AFRICA                                :Africa
+STR_REGION_AFRICA_NORTHERN                       :Northern Africa
+STR_REGION_AFRICA_WESTERN                        :Western Africa
+STR_REGION_AFRICA_MIDDLE                         :Middle Africa
+STR_REGION_AFRICA_EASTERN                        :Eastern Africa
+STR_REGION_AFRICA_SOUTHERN                       :Southern Africa
+STR_REGION_ASIA                                  :Asia
+STR_REGION_ASIA_WESTERN                          :Western Asia
+STR_REGION_ASIA_CENTRAL                          :Central Asia
+STR_REGION_ASIA_EASTERN                          :Eastern Asia
+STR_REGION_ASIA_SOUTHERN                         :Southern Asia
+STR_REGION_ASIA_SOUTHEASTERN                     :South-eastern Asia
+STR_REGION_OCEANIA                               :Oceania
+STR_REGION_OCEANIA_MICRONESIA                    :Micronesia
+STR_REGION_OCEANIA_MELANESIA                     :Melanesia
+STR_REGION_OCEANIA_POLYNESIA                     :Polynesia
+STR_REGION_OCEANIA_AUSTRALIA_AND_NEW_ZEALAND     :Australia and New Zealand
 
 # Country flags
 STR_FLAG_AD            :Andorra
