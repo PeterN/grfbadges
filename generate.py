@@ -19,7 +19,7 @@ BADGE_BPP = [grf.BPP_32, grf.BPP_8]
 # Base sizes at 1x zoom.
 BADGE_HEIGHT = int(12)
 FLAG_HEIGHT = int(10)
-FLAG_WIDTH = int(FLAG_HEIGHT * 3 / 2) # Force flags to have a 3:2 aspect ratio to fit the overlays.
+FLAG_WIDTH = int(FLAG_HEIGHT * 4 / 3) # Force flags to have a 3:2 aspect ratio to fit the overlays.
 
 BADGE = lib.register_badge_feature()
 
@@ -31,10 +31,10 @@ class BadgeOverlays:
     def get_overlay(self, zoom, w, h):
         key = (zoom, w, h)
         if key not in self.overlays:
+            scale = lib.get_scale_for_zoom(zoom)
             if zoom == grf.ZOOM_NORMAL:
-                self.overlays[key] = grf.Image.open(BADGE_PATH / f"{self.name}-{w}x{h}.png")
+                self.overlays[key] = grf.Image.open(BADGE_PATH / f"{self.name}-{scale}x-{w}x{h}.png")
             else:
-                scale = lib.get_scale_for_zoom(zoom)
                 self.overlays[key] = self.get_overlay(grf.ZOOM_NORMAL, w, h).resize(size=(w * scale, h * scale), resample=Image.Resampling.NEAREST)
 
         return self.overlays[key]
