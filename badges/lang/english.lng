@@ -10,6 +10,7 @@ STR_CLASS_OPERATOR     :Operator
 STR_CLASS_PROPULSION   :Propulsion
 STR_CLASS_LIVERY       :Livery
 STR_CLASS_REGION       :Region
+STR_CLASS_ZONE         :Zone
 
 # Roles
 STR_ROLE_PASSENGER           :Passenger
@@ -55,6 +56,31 @@ STR_REGION_OCEANIA_MICRONESIA                    :Micronesia
 STR_REGION_OCEANIA_MELANESIA                     :Melanesia
 STR_REGION_OCEANIA_POLYNESIA                     :Polynesia
 STR_REGION_OCEANIA_AUSTRALIA_AND_NEW_ZEALAND     :Australia and New Zealand
+
+# Residential, Commercial and Industrial
+STR_ZONE_RESIDENTIAL                              :Residential
+STR_ZONE_RESIDENTIAL_LOW_DENSITY                  :Low density residential
+STR_ZONE_RESIDENTIAL_MEDIUM_DENSITY               :Medium density residential
+STR_ZONE_RESIDENTIAL_HIGH_DENSITY                 :High density residential
+STR_ZONE_COMMERCIAL                               :Commercial
+STR_ZONE_COMMERCIAL_LOW_DENSITY                   :Low density commercial
+STR_ZONE_COMMERCIAL_MEDIUM_DENSITY                :Medium density commercial
+STR_ZONE_COMMERCIAL_HIGH_DENSITY                  :High density commercial
+STR_ZONE_INDUSTRIAL                               :Industrial
+STR_ZONE_INDUSTRIAL_LOW_DENSITY                   :Low density industrial
+STR_ZONE_INDUSTRIAL_MEDIUM_DENSITY                :Medium density industrial
+STR_ZONE_INDUSTRIAL_HIGH_DENSITY                  :High density industrial
+STR_ZONE_MIXED                                    :Commercial & residential
+STR_ZONE_MIXED_LOW_DENSITY                        :Low density commercial & residential
+STR_ZONE_MIXED_MEDIUM_DENSITY                     :Medium density commercial & residential
+STR_ZONE_MIXED_HIGH_DENSITY                       :High density commercial & residential
+STR_ZONE_AGRICULTURAL                             :Agricultural
+STR_ZONE_FORESTRY                                 :Forestry
+STR_ZONE_PUBLIC                                   :Public
+STR_ZONE_TRANSPORT                                :Transport
+STR_ZONE_GENERAL                                  :General
+STR_ZONE_LEISURE                                  :Leisure
+STR_ZONE_OTHER                                    :Other
 
 # Country flags
 STR_FLAG_AD            :Andorra

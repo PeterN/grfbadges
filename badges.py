@@ -22,6 +22,7 @@ BADGE_CLASS_OPERATOR = "operator"
 BADGE_CLASS_POWER = "power"
 BADGE_CLASS_LIVERY = "livery"
 BADGE_CLASS_REGION = "region"
+BADGE_CLASS_ZONE = "zone"
 
 # Classes
 b.add(BADGE_CLASS_FLAG, None, "STR_CLASS_FLAG")
@@ -30,6 +31,7 @@ b.add(BADGE_CLASS_OPERATOR, None, "STR_CLASS_OPERATOR")
 b.add(BADGE_CLASS_POWER, None, "STR_CLASS_PROPULSION")
 b.add(BADGE_CLASS_LIVERY, None, "STR_CLASS_LIVERY")
 b.add(BADGE_CLASS_REGION, None, "STR_CLASS_REGION")
+b.add(BADGE_CLASS_ZONE, None, "STR_CLASS_ZONE")
 
 # Modes
 b.add(BADGE_CLASS_ROLE + "/passenger", None, "STR_ROLE_PASSENGER")
@@ -75,6 +77,31 @@ b.add(BADGE_CLASS_REGION + "/oceania/micronesia", None, "STR_REGION_OCEANIA_MICR
 b.add(BADGE_CLASS_REGION + "/oceania/melanesia", None, "STR_REGION_OCEANIA_MELANESIA")
 b.add(BADGE_CLASS_REGION + "/oceania/polynesia", None, "STR_REGION_OCEANIA_POLYNESIA")
 b.add(BADGE_CLASS_REGION + "/oceania/australia_and_new_zealand", None, "STR_REGION_OCEANIA_AUSTRALIA_AND_NEW_ZEALAND")
+
+# RCI
+b.add(BADGE_CLASS_ZONE + "/res", None, "STR_ZONE_RESIDENTIAL")
+b.add(BADGE_CLASS_ZONE + "/res/low", None, "STR_ZONE_RESIDENTIAL_LOW_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/res/medium", None, "STR_ZONE_RESIDENTIAL_MEDIUM_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/res/high", None, "STR_ZONE_RESIDENTIAL_HIGH_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/com", None, "STR_ZONE_COMMERCIAL")
+b.add(BADGE_CLASS_ZONE + "/com/low", None, "STR_ZONE_COMMERCIAL_LOW_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/com/medium", None, "STR_ZONE_COMMERCIAL_MEDIUM_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/com/high", None, "STR_ZONE_COMMERCIAL_HIGH_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/ind", None, "STR_ZONE_INDUSTRIAL")
+b.add(BADGE_CLASS_ZONE + "/ind/low", None, "STR_ZONE_INDUSTRIAL_LOW_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/ind/medium", None, "STR_ZONE_INDUSTRIAL_MEDIUM_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/ind/high", None, "STR_ZONE_INDUSTRIAL_HIGH_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/mixed", None, "STR_ZONE_MIXED")
+b.add(BADGE_CLASS_ZONE + "/mixed/low", None, "STR_ZONE_MIXED_LOW_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/mixed/medium", None, "STR_ZONE_MIXED_MEDIUM_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/mixed/high", None, "STR_ZONE_MIXED_HIGH_DENSITY")
+b.add(BADGE_CLASS_ZONE + "/agricultural", None, "STR_ZONE_AGRICULTURAL")
+b.add(BADGE_CLASS_ZONE + "/forestry", None, "STR_ZONE_FORESTRY")
+b.add(BADGE_CLASS_ZONE + "/public", None, "STR_ZONE_PUBLIC")
+b.add(BADGE_CLASS_ZONE + "/transport", None, "STR_ZONE_TRANSPORT")
+b.add(BADGE_CLASS_ZONE + "/general", None, "STR_ZONE_GENERAL")
+b.add(BADGE_CLASS_ZONE + "/leisure", None, "STR_ZONE_LEISURE")
+b.add(BADGE_CLASS_ZONE + "/other", None, "STR_ZONE_OTHER")
 
 # Country flags
 b.add(BADGE_CLASS_FLAG + "/AD", "flag-icons/ad.svg", "STR_FLAG_AD")
