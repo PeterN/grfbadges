@@ -7,14 +7,16 @@ import filters
 from lib import BadgeFlags
 from pathlib import Path
 
+b = generate.Badges()
+
 g = grf.NewGRF(
     format_version=8,
     grfid=b"PNS\xFF",
-    name="Default Badge Set",
-    description="A set of badges for common country flags, power types and operator logos",
+    name=b.s['STR_NAME'],
+    description=b.s['STR_DESCRIPTION'],
+    version=1,
+    min_compatible_version=0,
 )
-
-b = generate.Badges()
 
 BADGE_CLASS_FLAG = "flag"
 BADGE_CLASS_ROLE = "role"
