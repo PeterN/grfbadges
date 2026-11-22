@@ -27,6 +27,9 @@ STR_ROLE_BANKING             :Banking
 STR_ROLE_SNOWPLOUGH          :Snowplough
 STR_ROLE_UTILITY             :Utility
 STR_ROLE_PROTOTYPE           :Prototype
+STR_ROLE_CITY                :City
+STR_ROLE_SUBURB              :Suburban
+STR_ROLE_REGIONAL            :Regional
 
 # Regions
 STR_REGION_AMERICA                               :Americas
@@ -377,8 +380,13 @@ STR_PROPULSION_ELECTRIC_DC_1500            :Electric (DC 1500V)
 STR_PROPULSION_ELECTRIC_DC_3000            :Electric (DC 3kV)
 STR_PROPULSION_GAS_TURBINE                 :Gas Turbine
 STR_PROPULSION_BATTERY                     :Battery
+STR_PROPULSION_GASOLINE                    :Petrol
+STR_PROPULSION_NATURAL_GAS                 :Natural Gas
+STR_PROPULSION_HYDROGEN                    :Hydrogen
 
 # Colours
+STR_LIVERY_COMPANY_FIRSTCC     :Primary company colour
+STR_LIVERY_COMPANY_SECONDCC    :Secondary company colour
 STR_LIVERY_COMPANY_2CC         :Dual company colour (2CC)
 STR_LIVERY_COMPANY_RANDOM_1CC  :Random based on first company colour
 STR_LIVERY_COMPANY_RANDOM_2CC  :Random based on second company colour
